@@ -1,3 +1,5 @@
+import static groovy.io.FileType.FILES
+
 // *************************
 // * This gradle script should be included in the build.gradle by
 // * using: apply from: 'replace-newpipe-with-bravenewpipe-strings.gradle'
@@ -205,3 +207,91 @@ task testReplaceMailandJsonandSignature() {
     def sourceDir = "${rootDir}/app/${relativeDirFile}/"
     alterFilesAndVerify(sourceDir, true)
 }
+
+//-----------------------------------------------------------------------------------------
+// ############ begin -- section only relevant for braveKitkat flavor building#############
+//-----------------------------------------------------------------------------------------
+// We have some same sourcecode files in 'main' and in 'braveKitkat' flavor.
+// To make it compile we need to remove the 'main' files first. Before calling:
+// # gradle assembleBraveKitkat{Debug,Release,Whatever}
+// you have to call
+// # gradle prepareKitkatFlavor
+// and afterwards to restore the files (in case you want to build another flavor:
+// # gradle unPrepareKitkatFlavor
+ext.prepareFilesForKitkat = { doRestore ->
+
+    def relativeSourceDir = 'src/braveKitkat/java'
+    def sourceDir = "${rootDir}/app/${relativeSourceDir}/"
+    def tempDir = "${rootDir}/tmp-kitkat"
+
+    new File(sourceDir).eachFileRecurse(FILES) {
+        if ((!it.name.startsWith('Brave')) && (it.name.endsWith(".kt") || it.name.endsWith(".java"))) {
+            def targetParentDir = it.parent.replace("braveKitkat", "main")
+            def fileName = it.name
+            def originFilePath = targetParentDir + "/" + fileName
+            def targetFileName = tempDir + "/" + fileName
+
+            if (doRestore) {
+                println "[BraveKitkat] move: " + targetFileName + " -> " + originFilePath
+                ant.move(file: targetFileName, tofile: originFilePath)
+            } else { // hide the files from the compiler
+                println "[BraveKitkat] move " + originFilePath + " -> " + tempDir
+                ant.move(file: originFilePath, toDir: tempDir)
+            }
+        }
+    }
+}
+
+ext.alterNewVersionWorkerForKitkat = { targetDir, isTest, infix ->
+
+    if (targetDir.contains('src/main/java') or isTest) { // only look into the 'main' variant
+        replaceAndVerify('m', false, targetDir,
+                /* filename: */ 'org/schabi/newpipe/NewVersionWorker.kt',
+                /* match: */ '(private const val NEWPIPE_API_URL =).*\n.*',
+                /* replace: */ '\\1\n            "https://raw.githubusercontent.com/bravenewpipe/bnp-r-mgr/' + infix + '/api/data.json"',
+                /* verify: */ '"https://raw.githubusercontent.com/bravenewpipe/bnp-r-mgr/' + infix + '/api/data.json"')
+    }
+
+    return "${targetDir}"
+}
+
+ext.replaceNewVersionJsonUrl = { infix ->
+    def relativeDirFile = 'src/main/java'
+    def sourceDir = "${rootDir}/app/${relativeDirFile}/"
+    alterNewVersionWorkerForKitkat(sourceDir, false, infix)
+}
+
+task prepareKitkatFlavor() {
+    group = 'brave'
+    description = "move duplicated files from 'main' to tmp dir"
+    doLast {
+        prepareFilesForKitkat(false)
+        replaceNewVersionJsonUrl("kitkat")
+    }
+}
+
+task unprepareKitkatFlavor() {
+    group = 'brave'
+    description = "move duplicated files from tmp dir 'main'"
+    doLast {
+        prepareFilesForKitkat(true)
+        replaceNewVersionJsonUrl("master")
+    }
+}
+
+task testReplaceNewVersionUrl() {
+    group = "braveTest"
+    description = "change to kitkat new version URL"
+    doLast {
+        replaceNewVersionJsonUrl("kitkat")
+    }
+}
+
+task testUnReplaceNewVersionUrl() {
+    group = "braveTest"
+    description = "change to master new version URL"
+    doLast {
+        replaceNewVersionJsonUrl("master")
+    }
+}
+// ############ end -- section only relevant for braveKitkat flavor building#############
