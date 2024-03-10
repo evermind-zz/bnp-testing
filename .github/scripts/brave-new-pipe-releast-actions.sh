@@ -18,16 +18,16 @@ TAG=$1
 APK_FILE=$2
 
 BNP_R_MGR_REPO="bnp-r-mgr"
-GITHUB_LOGIN="bravenewpipe"
-RELEASE_BODY="Apk available at bravenewpipe/NewPipe@${TAG}](https://github.com/bravenewpipe/NewPipe/releases/tag/${TAG})."
+GITHUB_LOGIN="evermind-zz"
+RELEASE_BODY="Apk available at evermind-zz/bnp-testing@${TAG}](https://github.com/evermind-zz/bnp-testing/releases/tag/${TAG})."
 
 PRERELEASE="false"
 if [[ "$TAG" == "latest" ]]; then
   PRERELEASE="true"
 fi
 
-if [[ "$GITHUB_REPOSITORY" != "bravenewpipe/NewPipe" ]]; then
-  echo "This mirror script is only meant to be run from bravenewpipe/NewPipe, not ${GITHUB_REPOSITORY}. Nothing to do here."
+if [[ "$GITHUB_REPOSITORY" != "evermind-zz/bnp-testing" ]]; then
+  echo "This mirror script is only meant to be run from evermind-zz/bnp-testing, not ${GITHUB_REPOSITORY}. Nothing to do here."
   exit 0
 fi
 
@@ -89,7 +89,7 @@ create_json_file_and_create_tagged_release() {
     local L_URL_ALTERNATIVE="$3"
     # checkout json release file repo
     rm -rf "/tmp/${BNP_R_MGR_REPO}"
-    git clone --branch "${L_BRANCH}" "https://bravenewpipe:${GITHUB_SUPER_TOKEN}@github.com/bravenewpipe/${BNP_R_MGR_REPO}.git" /tmp/${BNP_R_MGR_REPO}
+    git clone --branch "${L_BRANCH}" "https://evermind-zz:${GITHUB_SUPER_TOKEN}@github.com/evermind-zz/${BNP_R_MGR_REPO}.git" /tmp/${BNP_R_MGR_REPO}
     # update version{code,name} and download url
     cat $JSON_FILE \
         | jq '.flavors.github.stable.version_code = '${VERSION_CODE}'' \
@@ -106,9 +106,9 @@ BUILD_TOOLS_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
 
 AAPT=$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/aapt
 
-URL="https://github.com/bravenewpipe/NewPipe/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
-URL_CONSCRYPT="https://github.com/bravenewpipe/NewPipe/releases/download/${TAG}/BraveNewPipe_conscrypt_${TAG}.apk"
-URL_KITKAT="https://github.com/bravenewpipe/NewPipe/releases/download/${TAG}/BraveNewPipe_kitkat${TAG}.apk"
+URL="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
+URL_CONSCRYPT="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_conscrypt_${TAG}.apk"
+URL_KITKAT="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_kitkat${TAG}.apk"
 VERSION_NAME=${TAG/v/}
 VERSION_CODE="$($AAPT d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
 
