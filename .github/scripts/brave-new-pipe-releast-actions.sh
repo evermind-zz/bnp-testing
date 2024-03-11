@@ -112,7 +112,7 @@ AAPT=$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/aapt
 
 URL="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
 URL_CONSCRYPT="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_conscrypt_${TAG}.apk"
-URL_KITKAT="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_kitkat${TAG}.apk"
+URL_KITKAT="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_kitkat_${TAG}.apk"
 VERSION_NAME=${TAG/v/}
 VERSION_CODE="$($AAPT d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
 
