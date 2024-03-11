@@ -176,6 +176,7 @@ jobs:
         env:
           GITHUB_SUPER_TOKEN: ${{ secrets.MY_GITHUB_SUPER_TOKEN }}
           RENAMED_APK: ${{ steps.renamed_apk.outputs.RENAMED_APK }}
+          BUILD_TOOLS_VERSION: ${{ env.BUILD_TOOL_VERSION }}
         run: |
           ./.github/scripts/brave-new-pipe-releast-actions.sh "$AUTOMATIC_RELEASES_TAG" "${RENAMED_APK}"
 
