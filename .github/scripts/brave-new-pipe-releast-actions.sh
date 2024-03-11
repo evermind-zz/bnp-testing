@@ -103,7 +103,7 @@ create_json_file_and_create_tagged_release() {
 }
 
 detect_build_tools_version() {
-    ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+    ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1
 }
 
 BUILD_TOOLS_VERSION="${BUILD_TOOLS_VERSION:-$(detect_build_tools_version)}"
