@@ -18,16 +18,18 @@ TAG=$1
 APK_FILE=$2
 
 BNP_R_MGR_REPO="bnp-r-mgr"
-GITHUB_LOGIN="evermind-zz"
-RELEASE_BODY="Apk available at evermind-zz/bnp-testing@${TAG}](https://github.com/evermind-zz/bnp-testing/releases/tag/${TAG})."
+
+GITHUB_USER="evermind-zz"
+RELEASE_REPO="bnp-testing"
+RELEASE_BODY="Apk available at ${GITHUB_USER}/${RELEASE_REPO}@${TAG}](https://github.com/${GITHUB_USER}/${RELEASE_REPO}/releases/tag/${TAG})."
 
 PRERELEASE="false"
 if [[ "$TAG" == "latest" ]]; then
   PRERELEASE="true"
 fi
 
-if [[ "$GITHUB_REPOSITORY" != "evermind-zz/bnp-testing" ]]; then
-  echo "This mirror script is only meant to be run from evermind-zz/bnp-testing, not ${GITHUB_REPOSITORY}. Nothing to do here."
+if [[ "$GITHUB_REPOSITORY" != "${GITHUB_USER}/${RELEASE_REPO}" ]]; then
+  echo "This mirror script is only meant to be run from ${GITHUB_USER}/${RELEASE_REPO}, not ${GITHUB_REPOSITORY}. Nothing to do here."
   exit 0
 fi
 
@@ -38,20 +40,20 @@ create_tagged_release() {
   pushd /tmp/${L_REPO}/
 
   # Set the local git identity
-  git config user.email "${GITHUB_LOGIN}@users.noreply.github.com"
-  git config user.name "$GITHUB_LOGIN"
+  git config user.email "${GITHUB_USER}@users.noreply.github.com"
+  git config user.name "$GITHUB_USER"
 
   # Obtain the release ID for the previous release of $TAG (if present)
-  local previous_release_id=$(curl --user ${GITHUB_LOGIN}:${GITHUB_SUPER_TOKEN} --request GET --silent https://api.github.com/repos/${GITHUB_LOGIN}/${L_REPO}/releases/tags/${TAG} | jq '.id')
+  local previous_release_id=$(curl --user ${GITHUB_USER}:${GITHUB_SUPER_TOKEN} --request GET --silent https://api.github.com/repos/${GITHUB_USER}/${L_REPO}/releases/tags/${TAG} | jq '.id')
 
   # Delete the previous release (if present)
   if [[ -n "$previous_release_id" ]]; then
     echo "Deleting previous release: ${previous_release_id}"
     curl \
-      --user ${GITHUB_LOGIN}:${GITHUB_SUPER_TOKEN} \
+      --user ${GITHUB_USER}:${GITHUB_SUPER_TOKEN} \
       --request DELETE \
       --silent \
-      https://api.github.com/repos/${GITHUB_LOGIN}/${L_REPO}/releases/${previous_release_id}
+      https://api.github.com/repos/${GITHUB_USER}/${L_REPO}/releases/${previous_release_id}
   fi
 
   # Delete previous identical tags, if present
@@ -67,11 +69,11 @@ create_tagged_release() {
 
 # evermind -- we don't want any release entries there  # Generate a skeleton release on GitHub
 # evermind -- we don't want any release entries there  curl \
-# evermind -- we don't want any release entries there    --user ${GITHUB_LOGIN}:${GITHUB_SUPER_TOKEN} \
+# evermind -- we don't want any release entries there    --user ${GITHUB_USER}:${GITHUB_SUPER_TOKEN} \
 # evermind -- we don't want any release entries there    --request POST \
 # evermind -- we don't want any release entries there    --silent \
 # evermind -- we don't want any release entries there    --data @- \
-# evermind -- we don't want any release entries there    https://api.github.com/repos/${GITHUB_LOGIN}/${L_REPO}/releases <<END
+# evermind -- we don't want any release entries there    https://api.github.com/repos/${GITHUB_USER}/${L_REPO}/releases <<END
 # evermind -- we don't want any release entries there  {
 # evermind -- we don't want any release entries there    "tag_name": "$TAG",
 # evermind -- we don't want any release entries there    "name": "Auto-generated release for tag $TAG",
@@ -89,7 +91,7 @@ create_json_file_and_create_tagged_release() {
     local L_URL_ALTERNATIVE="$3"
     # checkout json release file repo
     rm -rf "/tmp/${BNP_R_MGR_REPO}"
-    git clone --branch "${L_BRANCH}" "https://evermind-zz:${GITHUB_SUPER_TOKEN}@github.com/evermind-zz/${BNP_R_MGR_REPO}.git" /tmp/${BNP_R_MGR_REPO}
+    git clone --branch "${L_BRANCH}" "https://${GITHUB_USER}:${GITHUB_SUPER_TOKEN}@github.com/${GITHUB_USER}/${BNP_R_MGR_REPO}.git" /tmp/${BNP_R_MGR_REPO}
     # update version{code,name} and download url
     cat $JSON_FILE \
         | jq '.flavors.github.stable.version_code = '${VERSION_CODE}'' \
@@ -110,9 +112,10 @@ BUILD_TOOLS_VERSION="${BUILD_TOOLS_VERSION:-$(detect_build_tools_version)}"
 
 AAPT=$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/aapt
 
-URL="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_${TAG}.apk"
-URL_CONSCRYPT="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_conscrypt_${TAG}.apk"
-URL_KITKAT="https://github.com/evermind-zz/bnp-testing/releases/download/${TAG}/BraveNewPipe_kitkat_${TAG}.apk"
+URL_PREFIX="https://github.com/${GITHUB_USER}/${RELEASE_REPO}/releases/download/${TAG}"
+URL="$URL_PREFIX/BraveNewPipe_${TAG}.apk"
+URL_CONSCRYPT="$URL_PREFIX/BraveNewPipe_conscrypt_${TAG}.apk"
+URL_KITKAT="$URL_PREFIX/BraveNewPipe_kitkat_${TAG}.apk"
 VERSION_NAME=${TAG/v/}
 VERSION_CODE="$($AAPT d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
 
