@@ -19,8 +19,8 @@ APK_FILE=$2
 
 BNP_R_MGR_REPO="bnp-r-mgr"
 
-GITHUB_USER="bravenewpipe"
-RELEASE_REPO="NewPipe"
+GITHUB_USER="evermind-zz"
+RELEASE_REPO="bnp-testing"
 RELEASE_BODY="Apk available at ${GITHUB_USER}/${RELEASE_REPO}@${TAG}](https://github.com/${GITHUB_USER}/${RELEASE_REPO}/releases/tag/${TAG})."
 
 PRERELEASE="false"
