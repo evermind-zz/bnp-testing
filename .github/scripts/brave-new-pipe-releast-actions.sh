@@ -102,7 +102,11 @@ create_json_file_and_create_tagged_release() {
     create_tagged_release "$BNP_R_MGR_REPO" "$L_BRANCH" "\"version\": \"$VERSION_NAME\""
 }
 
-BUILD_TOOLS_VERSION=$(ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+detect_build_tools_version() {
+    ls /usr/local/lib/android/sdk/build-tools/ | tail -n 1)
+}
+
+BUILD_TOOLS_VERSION="${BUILD_TOOLS_VERSION:-$(detect_build_tools_version)}"
 
 AAPT=$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/aapt
 
