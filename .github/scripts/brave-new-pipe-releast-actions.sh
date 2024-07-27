@@ -29,10 +29,11 @@ if [[ "$TAG" == "latest" ]]; then
   PRERELEASE="true"
 fi
 
-if [[ "$GITHUB_REPOSITORY" != "${GITHUB_USER}/${RELEASE_REPO}" ]]; then
-  echo "This mirror script is only meant to be run from ${GITHUB_USER}/${RELEASE_REPO}, not ${GITHUB_REPOSITORY}. Nothing to do here."
-  exit 0
-fi
+find $HOME
+#if [[ "$GITHUB_REPOSITORY" != "${GITHUB_USER}/${RELEASE_REPO}" ]]; then
+#  echo "This mirror script is only meant to be run from ${GITHUB_USER}/${RELEASE_REPO}, not ${GITHUB_REPOSITORY}. Nothing to do here."
+#  exit 0
+#fi
 
 create_tagged_release() {
   local L_REPO=$1
