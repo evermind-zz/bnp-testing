@@ -8,8 +8,13 @@ import com.grack.nanojson.JsonObject;
 import com.grack.nanojson.JsonParser;
 import com.grack.nanojson.JsonParserException;
 
+import org.schabi.newpipe.extractor.downloader.Response;
+import org.schabi.newpipe.extractor.exceptions.ReCaptchaException;
+
+import java.io.IOException;
 import java.util.Optional;
 
+import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 public final class BraveNewVersionWorkerHelper {
@@ -67,5 +72,41 @@ public final class BraveNewVersionWorkerHelper {
         final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(
                 context.getString(R.string.brave_settings_update_behaviour_key), false);
+    }
+
+    @NonNull
+    public static Response getUpdateInfo(@NonNull final String apiUpdateUrl)
+            throws IOException, ReCaptchaException {
+        try {
+            final Response response = DownloaderImpl.getInstance().get(apiUpdateUrl);
+            if (response.responseCode() == 404) {
+                throw new IOException("404 url does not exist");
+            }
+            return response;
+
+        } catch (final IOException | ReCaptchaException ignored) {
+
+        }
+        // the data url before new url is active
+        // this method should be removed after move to new github username
+        final String  oldUpdateApi =
+                "https://raw.githubusercontent.com/bravenewpipe/bnp-r-mgr/master/api/data.json";
+        return DownloaderImpl.getInstance().get(oldUpdateApi);
+    }
+
+    public static String getProjectUrl() {
+        final String newProjPage = "https://github.com/bravepipeproject";
+        final String oldProjPage = "https://github.com/bravenewpipe";
+
+        try {
+            final Response response = DownloaderImpl.getInstance().head(oldProjPage);
+            if (response.responseCode() == 200) {
+                return oldProjPage;
+            }
+        } catch (final IOException | ReCaptchaException e) {
+            System.out.println(e);
+        }
+
+        return newProjPage;
     }
 }
