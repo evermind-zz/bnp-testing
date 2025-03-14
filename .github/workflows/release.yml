@@ -41,7 +41,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
-      - name: Rename strings from NewPipe to BraveNewPipe
+      - name: Rename strings from NewPipe to BravePipe
         run: ./gradlew bravify
 
       - name: Build brave flavor
@@ -142,20 +142,20 @@ jobs:
           SIGNED_APK_CONSCRYPT: ${{ steps.sign_app_conscrypt.outputs.signedReleaseFile }}
           SIGNED_APK_LEGACY: ${{ steps.sign_app_legacy.outputs.signedReleaseFile }}
         run: |
-          echo "RENAMED_APK=${SIGNED_APK%/*}/BraveNewPipe_${SOURCE_TAG}.apk" >> $GITHUB_OUTPUT
-          cp ${SIGNED_APK} ${SIGNED_APK%/*}/BraveNewPipe_${SOURCE_TAG}.apk
+          echo "RENAMED_APK=${SIGNED_APK%/*}/BravePipe_${SOURCE_TAG}.apk" >> $GITHUB_OUTPUT
+          cp ${SIGNED_APK} ${SIGNED_APK%/*}/BravePipe_${SOURCE_TAG}.apk
           cd ${SIGNED_APK%/*}
-          sha256sum BraveNewPipe_${SOURCE_TAG}.apk > BraveNewPipe_${SOURCE_TAG}.apk.sha256
+          sha256sum BravePipe_${SOURCE_TAG}.apk > BravePipe_${SOURCE_TAG}.apk.sha256
           cd -
-          echo "RENAMED_APK_CONSCRYPT=${SIGNED_APK_CONSCRYPT%/*}/BraveNewPipe_conscrypt_${SOURCE_TAG}.apk" >> $GITHUB_OUTPUT
-          cp ${SIGNED_APK_CONSCRYPT} ${SIGNED_APK_CONSCRYPT%/*}/BraveNewPipe_conscrypt_${SOURCE_TAG}.apk
+          echo "RENAMED_APK_CONSCRYPT=${SIGNED_APK_CONSCRYPT%/*}/BravePipe_conscrypt_${SOURCE_TAG}.apk" >> $GITHUB_OUTPUT
+          cp ${SIGNED_APK_CONSCRYPT} ${SIGNED_APK_CONSCRYPT%/*}/BravePipe_conscrypt_${SOURCE_TAG}.apk
           cd ${SIGNED_APK_CONSCRYPT%/*}
-          sha256sum BraveNewPipe_conscrypt_${SOURCE_TAG}.apk > BraveNewPipe_conscrypt_${SOURCE_TAG}.apk.sha256
+          sha256sum BravePipe_conscrypt_${SOURCE_TAG}.apk > BravePipe_conscrypt_${SOURCE_TAG}.apk.sha256
           cd -
-          echo "RENAMED_APK_LEGACY=${SIGNED_APK_LEGACY%/*}/BraveNewPipe_legacy_${SOURCE_TAG}.apk" >> $GITHUB_OUTPUT
-          cp ${SIGNED_APK_LEGACY} ${SIGNED_APK_LEGACY%/*}/BraveNewPipe_legacy_${SOURCE_TAG}.apk
+          echo "RENAMED_APK_LEGACY=${SIGNED_APK_LEGACY%/*}/BravePipe_legacy_${SOURCE_TAG}.apk" >> $GITHUB_OUTPUT
+          cp ${SIGNED_APK_LEGACY} ${SIGNED_APK_LEGACY%/*}/BravePipe_legacy_${SOURCE_TAG}.apk
           cd ${SIGNED_APK_LEGACY%/*}
-          sha256sum BraveNewPipe_legacy_${SOURCE_TAG}.apk > BraveNewPipe_legacy_${SOURCE_TAG}.apk.sha256
+          sha256sum BravePipe_legacy_${SOURCE_TAG}.apk > BravePipe_legacy_${SOURCE_TAG}.apk.sha256
           cd -
       # evermind: how to autorelease?: https://github.com/marvinpinto/action-automatic-releases
       - name: auto release

@@ -54,7 +54,7 @@ jobs:
           distribution: "temurin"
           cache: 'gradle'
 
-      - name: Rename strings from NewPipe to BraveNewPipe
+      - name: Rename strings from NewPipe to BravePipe
         run: ./gradlew bravify
 
       - name: Build brave flavor

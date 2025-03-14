@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
-# this script updates the json file with new version that BraveNewPipe is fetching regulary
+# this script updates the json file with new version that BravePipe is fetching regulary
 
 set -e
 
 if [[ $# -lt 2 ]]; then
   echo "This needs a release tag and a apk file:"
-  echo "e.g. $0 v0.22.0-1.0.5 /path/to/BraveNewPipe_v0.22.0-1.0.5.apk"
+  echo "e.g. $0 v0.22.0-1.0.5 /path/to/BravePipe_v0.22.0-1.0.5.apk"
   exit 1
 fi
 
@@ -146,9 +146,9 @@ BUILD_TOOLS_VERSION="${BUILD_TOOLS_VERSION:-$(detect_build_tools_version)}"
 AAPT=$ANDROID_HOME/build-tools/$BUILD_TOOLS_VERSION/aapt
 
 URL_PREFIX="https://github.com/${GITHUB_USER}/${RELEASE_REPO}/releases/download/${TAG}"
-URL="$URL_PREFIX/BraveNewPipe_${TAG}.apk"
-URL_CONSCRYPT="$URL_PREFIX/BraveNewPipe_conscrypt_${TAG}.apk"
-URL_LEGACY="$URL_PREFIX/BraveNewPipe_legacy_${TAG}.apk"
+URL="$URL_PREFIX/BravePipe_${TAG}.apk"
+URL_CONSCRYPT="$URL_PREFIX/BravePipe_conscrypt_${TAG}.apk"
+URL_LEGACY="$URL_PREFIX/BravePipe_legacy_${TAG}.apk"
 VERSION_NAME=${TAG/v/}
 VERSION_CODE="$($AAPT d badging $APK_FILE | grep -Po "(?<=\sversionCode=')([0-9.-]+)")"
 
