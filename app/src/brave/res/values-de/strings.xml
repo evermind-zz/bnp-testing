@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="brave_about_fork">Aufgrund restriktiver Projektrichtlinien weigert sich das NewPipeTeam, Plattformen hinzuzufügen, die sie als anstößig empfinden. Dieser Fork (BraveNewPipe) wird nicht so restriktiv sein. Solange die Plattformen im Sinne der freien Meinungsäußerung arbeiten, können sie integriert werden. Dennoch werden Plattformen, die Pornographie oder andere entwürdigende Dinge fördern, hier <b>NICHT</b> integriert werden. Dieser Fork wird sich nur auf die Integration anderer Plattformen konzentrieren. Nicht relevante Patches werden vorerst abgelehnt. Du kannst gerne vorschlagen, welche alternativen Plattformen unterstützt werden sollten. Jeder Beitrag (Entwicklung/Test/Fehlerbericht) ist sehr willkommen. Derzeit zusätzliche Plattformen im Vergleich zu NewPipe:</string>
+    <string name="brave_about_fork">Aufgrund restriktiver Projektrichtlinien weigert sich das NewPipeTeam, Plattformen hinzuzufügen, die sie als anstößig empfinden. Dieser Fork (BravePipe) wird nicht so restriktiv sein. Solange die Plattformen im Sinne der freien Meinungsäußerung arbeiten, können sie integriert werden. Dennoch werden Plattformen, die Pornographie oder andere entwürdigende Dinge fördern, hier <b>NICHT</b> integriert werden. Dieser Fork wird sich nur auf die Integration anderer Plattformen konzentrieren. Nicht relevante Patches werden vorerst abgelehnt. Du kannst gerne vorschlagen, welche alternativen Plattformen unterstützt werden sollten. Jeder Beitrag (Entwicklung/Test/Fehlerbericht) ist sehr willkommen. Derzeit zusätzliche Plattformen im Vergleich zu NewPipe:</string>
     <string name="brave_about_title">Über diesen Fork</string>
 
-    <!-- begin - strings for search filter feature (BraveNewPipe Services only) -->
+    <!-- begin - strings for search filter feature (BravePipe Services only) -->
     <string name="search_filters_short">Kurz</string>
     <string name="search_filters_long">Lang</string>
     <string name="search_filters_rumbles">Rumbles</string>
@@ -14,7 +14,7 @@
     <string name="search_filters_feature_45_min_plus">Filmlänge (45m+)</string>
     <string name="search_filters_newest_first">Neuste zuerst</string>
     <string name="search_filters_oldest_first">Älteste zuerst</string>
-    <!-- end - strings for search filter feature (BraveNewPipe Services only) -->
+    <!-- end - strings for search filter feature (BravePipe Services only) -->
 
     <!-- begin - strings for search filter feature (NewPipe Services only) -->
     <string name="filter_search_sort_filters">Sortierfilter</string>
@@ -79,8 +79,8 @@
     <string name="search_filters_yes">Ja</string>
     <!-- end - strings for search filter feature (NewPipe Services only) -->
 
-    <!-- begin BraveNewPipe Apk upgrade dialog -->
+    <!-- begin BravePipe Apk upgrade dialog -->
     <string name="update">Aktualisieren</string>
     <string name="update_new_version">Neue Version: %s</string>
-    <!-- end BraveNewPipe Apk upgrade dialog -->
+    <!-- end BravePipe Apk upgrade dialog -->
 </resources>

@@ -25,7 +25,7 @@ import okhttp3.OkHttpClient;
 import static org.schabi.newpipe.DownloaderImpl.USER_AGENT;
 
 /**
- * Used for code that only exists in BraveNewPipe and is used
+ * Used for code that only exists in BravePipe and is used
  * within the {@link DownloaderImpl}.
  */
 public final class BraveDownloaderImplUtils {
@@ -106,7 +106,7 @@ public final class BraveDownloaderImplUtils {
      * Rumble needs to handle cookies to correctly redirect.
      *
      * It was reported in
-     * <a href="https://github.com/bravenewpipe/NewPipeExtractor/issues/123">issue#123</a>
+     * <a href="https://github.com/bravepipeproject/BravePipeExtractor/issues/123">issue#123</a>
      * even though it seems it was only temporary Rumble glitch this functionality is added here.
      *
      * @param theBuilder the builder

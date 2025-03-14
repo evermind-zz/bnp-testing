@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="brave_about_fork">Due to restrictive project policy, the NewPipeTeam refuses to add platforms that they find offensive. This fork (BraveNewPipe) will not be as restrictive. As long as the platforms work in the spirit of free speech, they could be integrated. Nevertheless, platforms that promote pornography or other degrading things will <b>NOT</b> be included here. This fork will focus only on integrating other platforms. Unrelated patches will be rejected for now. Feel free to suggest which alternative platforms should be included. Any contribution (development/testing/bug report) is greatly appreciated. Currently additional platforms compared to NewPipe:</string>
+    <string name="brave_about_fork">Due to restrictive project policy, the NewPipeTeam refuses to add platforms that they find offensive. This fork (BravePipe) will not be as restrictive. As long as the platforms work in the spirit of free speech, they could be integrated. Nevertheless, platforms that promote pornography or other degrading things will <b>NOT</b> be included here. This fork will focus only on integrating other platforms. Unrelated patches will be rejected for now. Feel free to suggest which alternative platforms should be included. Any contribution (development/testing/bug report) is greatly appreciated. Currently additional platforms compared to NewPipe:</string>
     <string name="brave_about_title">About this fork</string>
     <string name="brave_github_url" translatable="false">https://github.com/bravenewpipe</string>
     <string name="brave_supported_platforms" translatable="false">\n\u2022 BitChute\n\u2022 Rumble</string>
 
-    <!-- begin - strings for search filter feature (BraveNewPipe Services only) -->
+    <!-- begin - strings for search filter feature (BravePipe Services only) -->
     <string name="search_filters_short">Short</string>
     <string name="search_filters_long">Long</string>
     <string name="search_filters_rumbles">Rumbles</string>
@@ -21,7 +21,7 @@
     <string name="search_filters_sensitivity_nsfw">Nsfw</string>
     <string name="search_filters_sensitivity_nsfl">Nsfl</string>
     <string name="search_filters_sensitivity">Sensitivity</string>
-    <!-- end - strings for search filter feature (BraveNewPipe Services only) -->
+    <!-- end - strings for search filter feature (BravePipe Services only) -->
 
     <!-- begin - strings for search filter feature (NewPipe Services only) -->
     <string name="search_filters_10_30_min">10–30 min</string>
@@ -96,8 +96,8 @@
     <string name="search_filter_ui_chip_dialog">Chip Dialog</string>
     <!-- end - more strings for search filter feature -->
 
-    <!-- begin - BraveNewPipe settings page -->
-    <string name="brave_settings">BraveNewPipe Settings</string>
+    <!-- begin - BravePipe settings page -->
+    <string name="brave_settings">BravePipe Settings</string>
 
     <!-- begin - settings for replacing host domain names -->
     <string name="brave_settings_host_replace_key">brave_settings_host_replace_key</string>
@@ -108,14 +108,14 @@
 
     <!-- begin - settings for update behaviour - aka show dialog and download the apk internally -->
     <string name="brave_settings_update_behaviour_key">brave_settings_update_behaviour_key</string>
-    <string name="brave_settings_update_behaviour_description"><![CDATA[use internal downloader to fetch the newest version of BraveNewPipe. (A dialog will popup once you click on the notification or on the check manual button in settings -> updates)]]></string>
+    <string name="brave_settings_update_behaviour_description"><![CDATA[use internal downloader to fetch the newest version of BravePipe. (A dialog will popup once you click on the notification or on the check manual button in settings -> updates)]]></string>
     <string name="brave_settings_update_behaviour_title">Update Behaviour</string>
     <!-- end - settings for update behaviour - aka show dialog and download the apk internally -->
 
-    <!-- end - BraveNewPipe settings page -->
+    <!-- end - BravePipe settings page -->
 
-    <!-- begin BraveNewPipe Apk upgrade dialog -->
+    <!-- begin BravePipe Apk upgrade dialog -->
     <string name="update">Update</string>
     <string name="update_new_version">New version %s</string>
-    <!-- end BraveNewPipe Apk upgrade dialog -->
+    <!-- end BravePipe Apk upgrade dialog -->
 </resources>

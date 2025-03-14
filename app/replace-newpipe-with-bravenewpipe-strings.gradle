@@ -5,7 +5,7 @@ import static groovy.io.FileType.FILES
 // * This gradle script should be included in the build.gradle by
 // * using: apply from: 'replace-newpipe-with-bravenewpipe-strings.gradle'
 // *************************
-// * It will replace all NewPipe occurrences with BraveNewPipe in any
+// * It will replace all NewPipe occurrences with BravePipe in any
 // * strings.xml file. But some string references we do not want to change.
 // * Therefore they are listed in the 'doNotReplaceLinesContaining' array.
 // *************************
@@ -41,10 +41,10 @@ ext.copyStringsXmlFiles = { dir, tmpTargetDir ->
             line ->
                 if (shouldWeReplaceStuffInThisLine(line)) {
                     line
-                            .replace('NewPipe', 'BraveNewPipe')
-                            .replace('Newpipe', 'BraveNewPipe')
-                            .replace('নিউপাইপ', 'সাহসী নিউপাইপ') // bn (bengali)
-                            .replace('نیوپایپ', 'لوله جدید شجاع') // fa, czk (farsi)
+                            .replace('NewPipe', 'BravePipe')
+                            .replace('Newpipe', 'BravePipe')
+                            .replace('নিউপাইপ', 'ব্রেভপাইপ') // bn (bengali)
+                            .replace('نیوپایپ' , 'لوله شجاع') // fa, czk (farsi)
                 } else {
                     line
                 }
@@ -63,8 +63,8 @@ ext.copyNonStringsXmlFiles = { dir, tmpTargetDir ->
 
 // the return value points to the new srcDir containing the modified files
 ext.copyFilesAndReplaceStrings = { dir, tmpTargetDir ->
-    println "[BraveNewPipe string replacing] source dir: " + dir
-    println "[BraveNewPipe string replacing] target dir: " + tmpTargetDir
+    println "[BravePipe string replacing] source dir: " + dir
+    println "[BravePipe string replacing] target dir: " + tmpTargetDir
     copyStringsXmlFiles(dir, tmpTargetDir)
     copyNonStringsXmlFiles(dir, tmpTargetDir)
     return "${tmpTargetDir}"
@@ -116,12 +116,12 @@ ext.replaceAndVerify = { flags, byline, dir, fileName, match, replace, verify ->
     def lines2 = new File(dir + '/' + fileName).readLines()
     def result2 = lines2.find { it.contains(verify) }
     if (result2 != null) {
-        println "[BraveNewPipe] already changed $match in $fileName"
+        println "[BravePipe] already changed $match in $fileName"
         // already changed so return
         return
     }
 
-    println "[BraveNewPipe] string replacing in file: " + fileName + ' [What:]' + match
+    println "[BravePipe] string replacing in file: " + fileName + ' [What:]' + match
     ant.replaceregexp(
             match:match,
             replace:replace,
@@ -162,7 +162,7 @@ task testReplacingStrings() {
     // -> comment the 'return' statement to actually start debugging
     return
 
-    println "[TESTING BraveNewPipe string replacing]"
+    println "[TESTING BravePipe string replacing]"
 
     // modify .{xml} files
     def relativeDirFile = 'src/main/res'
@@ -172,9 +172,9 @@ task testReplacingStrings() {
     copyFilesAndReplaceStrings(sourceDir, targetDir)
 }
 
-ext.replaceNewPipeWithBraveNewPipeStrings = {
+ext.replaceNewPipeWithBravePipeStrings = {
 
-    println "[BraveNewPipe string replacing]"
+    println "[BravePipe string replacing]"
 
     // modify .{xml} files
     def relativeDirFile = 'src/main/res'
@@ -186,14 +186,14 @@ ext.replaceNewPipeWithBraveNewPipeStrings = {
 
 task bravify() {
     group = 'brave'
-    description = 'replaces string NewPipe with BraveNewPipe'
+    description = 'replaces string NewPipe with BravePipe'
 
     doLast {
-        replaceNewPipeWithBraveNewPipeStrings()
+        replaceNewPipeWithBravePipeStrings()
     }
 }
 
-// Patch NewPipe to use BraveNewPipe's:
+// Patch NewPipe to use BravePipe's:
 // - support email address
 // - the update json data URL
 // - the apk signature

@@ -49,11 +49,11 @@ android {
             if (normalizedWorkingBranch.isEmpty() || workingBranch == "master" || workingBranch == "dev") {
                 // default values when branch name could not be determined or is master or dev
                 applicationIdSuffix ".debug"
-                resValue "string", "app_name", "BraveNewPipe Debug"
+                resValue "string", "app_name", "BravePipe Debug"
             } else {
                 applicationIdSuffix ".debug." + normalizedWorkingBranch
-                resValue "string", "app_name", "BraveNewPipe " + workingBranch
-                archivesBaseName = 'BraveNewPipe_' + normalizedWorkingBranch
+                resValue "string", "app_name", "BravePipe " + workingBranch
+                archivesBaseName = 'BravePipe_' + normalizedWorkingBranch
             }
         }
 
@@ -70,7 +70,7 @@ android {
         }
     }
 
-    // use productFlavors to keep the name/version changes AFAP for BraveNewPipe
+    // use productFlavors to keep the name/version changes AFAP for BravePipe
     // more separate in hope of not getting to many merge conflicts
     flavorDimensions 'default'
     productFlavors {
@@ -89,7 +89,7 @@ android {
         brave {
             dimension 'default'
             applicationId "com.github.bravenewpipe"
-            resValue "string", "app_name", "BraveNewPipe"
+            resValue "string", "app_name", "BravePipe"
             versionCode defaultConfig.versionCode + braveVersionCode
             versionName "${defaultConfig.versionName}-${braveVersionName}"
             android.sourceSets.brave.res.srcDirs = [ 'src/brave/res', android.sourceSets.sponsorblock.res.srcDirs ]
@@ -98,7 +98,7 @@ android {
         braveConscrypt {
             dimension 'default'
             applicationId "com.github.bravenewpipe"
-            resValue "string", "app_name", "BraveNewPipe"
+            resValue "string", "app_name", "BravePipe"
             versionCode defaultConfig.versionCode + braveVersionCode
             versionName "${defaultConfig.versionName}-${braveVersionName}"
             android.sourceSets.braveConscrypt.res.srcDirs = android.sourceSets.brave.res.srcDirs
@@ -111,7 +111,7 @@ android {
         braveLegacy {
             dimension 'default'
             applicationId "com.github.bravenewpipe.kitkat"
-            resValue "string", "app_name", "BraveNewPipe Kitkat"
+            resValue "string", "app_name", "BravePipe Kitkat"
             versionCode defaultConfig.versionCode + braveVersionCode
             versionName "${defaultConfig.versionName}-${braveVersionName}"
             android.sourceSets.braveLegacy.res.srcDirs = [ 'src/braveLegacy/res', android.sourceSets.braveConscrypt.res.srcDirs ]
@@ -415,7 +415,7 @@ project.afterEvaluate {
     }
 }
 
-// keep the changed dependencies for BraveNewPipe more
+// keep the changed dependencies for BravePipe more
 // separate in hope of not getting to many merge conflicts
 def okHttpVersion = "4.12.0"
 // for JavaNetCookieJar see https://github.com/bravenewpipe/NewPipeExtractor/issues/123
@@ -435,5 +435,5 @@ configurations.all {
     }
 }
 
-// replace NewPipe with BraveNewPipe in all strings.xml
+// replace NewPipe with BravePipe in all strings.xml
 apply from: 'replace-newpipe-with-bravenewpipe-strings.gradle'

@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:textAppearance="@android:style/TextAppearance.Small"
-        tools:text="com.github.bravenewpipe" />
+        tools:text="com.github.bravepipe" />
 
     <org.schabi.newpipe.views.NewPipeTextView
         android:id="@+id/about_app_flavor"

@@ -39,7 +39,7 @@ class NewVersionWorker(
         versionName: String,
         apkLocationUrl: String?,
         versionCode: Int,
-        changeLog: String? // from BraveNewPipe's json
+        changeLog: String? // from BravePipe's json
     ) {
         if (BuildConfig.VERSION_CODE >= versionCode) {
             if (inputData.getBoolean(IS_MANUAL, false)) {
@@ -55,7 +55,7 @@ class NewVersionWorker(
         }
 
         val intent: Intent
-        // begin BraveNewPipe - prepare to launch update dialog if allowed
+        // begin BravePipe - prepare to launch update dialog if allowed
         if (BraveNewVersionWorkerHelper.isBraveUpdateBehaviourEnabled(applicationContext)) {
             intent = BraveNewVersionWorkerHelper.getUpgradeActivityIntent(
                 applicationContext,
@@ -68,7 +68,7 @@ class NewVersionWorker(
                 applicationContext.startActivity(intent)
                 return
             }
-            // end BraveNewPipe - prepare to launch update dialog if allowed
+            // end BravePipe - prepare to launch update dialog if allowed
         } else {
             // A pending intent to open the apk location url in the browser.
             intent = Intent(Intent.ACTION_VIEW, apkLocationUrl?.toUri())
@@ -171,7 +171,7 @@ class NewVersionWorker(
         private val DEBUG = MainActivity.DEBUG
         private val TAG = NewVersionWorker::class.java.simpleName
         private const val NEWPIPE_API_URL =
-            "https://raw.githubusercontent.com/bravenewpipe/bnp-r-mgr/master/api/data.json"
+            "https://raw.githubusercontent.com/bravepipeproject/bnp-r-mgr/master/api/data.json"
         private const val IS_MANUAL = "isManual"
 
         /**

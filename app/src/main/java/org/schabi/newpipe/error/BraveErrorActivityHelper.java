@@ -22,7 +22,7 @@ public final class BraveErrorActivityHelper {
 
         for (final String trace : stackTraces) {
             if (limit < size) {
-                finalList.add("BraveNewPipe TRUNCATED trace");
+                finalList.add("BravePipe TRUNCATED trace");
                 break;
             }
             size += trace.length();
