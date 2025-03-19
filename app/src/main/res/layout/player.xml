@@ -772,6 +772,8 @@
                     tools:ignore="ContentDescription"
                     tools:src="@drawable/ic_brightness_high" />
             </RelativeLayout>
+            <include layout="@layout/include_brave_player_ext"
+                android:id="@+id/brave_player_ext"/>
 
         </RelativeLayout>
 

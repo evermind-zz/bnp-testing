@@ -22,4 +22,12 @@
         app:singleLineTitle="false"
         app:iconSpaceReserved="false" />
 
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="@string/brave_settings_internal_volume_key"
+        android:summary="@string/brave_settings_internal_volume_description"
+        android:title="@string/brave_settings_internal_volume_title"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="false" />
+
 </PreferenceScreen>

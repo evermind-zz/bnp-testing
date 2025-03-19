@@ -112,6 +112,12 @@
     <string name="brave_settings_update_behaviour_title">Update Behaviour</string>
     <!-- end - settings for update behaviour - aka show dialog and download the apk internally -->
 
+    <!-- begin - settings for internal volume control - aka loudness independent of system volume -->
+    <string name="brave_settings_internal_volume_key">brave_settings_internal_volume_key</string>
+    <string name="brave_settings_internal_volume_description"><![CDATA[Onscreen volume slider for loudness control, independent of Android’s system media volume. Swipe along the right edge of the player to reveal a dark grey control. The main system volume slider is still usable]]></string>
+    <string name="brave_settings_internal_volume_title">Internal volume control</string>
+    <!-- end - settings for internal volume control - aka loudness independent of system volume -->
+
     <!-- end - BravePipe settings page -->
 
     <!-- begin BravePipe Apk upgrade dialog -->

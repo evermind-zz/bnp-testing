@@ -532,7 +532,7 @@ public final class Player implements PlaybackListener, Listener {
 
         UIs.call(PlayerUi::initPlayback);
 
-        simpleExoPlayer.setVolume(isMuted ? 0 : 1);
+        audioReactor.braveDoMute(isMuted);
         notifyQueueUpdateToListeners();
     }
 
@@ -1320,7 +1320,7 @@ public final class Player implements PlaybackListener, Listener {
 
     public void toggleMute() {
         final boolean wasMuted = isMuted();
-        simpleExoPlayer.setVolume(wasMuted ? 1 : 0);
+        audioReactor.braveDoMute(!wasMuted);
         if (wasMuted) {
             audioReactor.requestAudioFocus();
         } else {
