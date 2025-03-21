@@ -30,4 +30,12 @@
         app:singleLineTitle="false"
         app:iconSpaceReserved="false" />
 
+    <SwitchPreferenceCompat
+        android:defaultValue="false"
+        android:key="@string/brave_settings_hide_paid_content_key"
+        android:summary="@string/brave_settings_hide_paid_content_description"
+        android:title="@string/brave_settings_hide_paid_content_title"
+        app:singleLineTitle="false"
+        app:iconSpaceReserved="false" />
+
 </PreferenceScreen>

@@ -118,6 +118,11 @@
     <string name="brave_settings_internal_volume_title">Internal volume control</string>
     <!-- end - settings for internal volume control - aka loudness independent of system volume -->
 
+    <!-- begin - settings for hiding youtube members only streams -->
+    <string name="brave_settings_hide_paid_content_key">brave_settings_hide_paid_content_key</string>
+    <string name="brave_settings_hide_paid_content_description"><![CDATA[If enabled all Youtube "members only" videos will not be listed. Requires app restart on already loaded channels/search.]]></string>
+    <string name="brave_settings_hide_paid_content_title">Hide Paid Content Videos</string>
+    <!-- end - settings for hiding youtube members only streams -->
     <!-- end - BravePipe settings page -->
 
     <!-- begin BravePipe Apk upgrade dialog -->

@@ -59,7 +59,7 @@ import io.reactivex.rxjava3.plugins.RxJavaPlugins;
  * along with NewPipe.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-public class App extends BraveApp {
+public class App extends BraveCommonApp {
     public static final String PACKAGE_NAME = BuildConfig.APPLICATION_ID;
     private static final String TAG = App.class.toString();
 
