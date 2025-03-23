@@ -3,6 +3,7 @@ package org.schabi.newpipe;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.schabi.newpipe.extractor.services.rumble.settings.RumbleSettings;
 import org.schabi.newpipe.extractor.services.youtube.settings.YoutubeSettings;
 
 import java.util.Objects;
@@ -30,5 +31,7 @@ public class BraveExtractorSettings {
 
         YoutubeSettings.getInstance()
                 .setting(doHidePaidContent, YoutubeSettings.HIDE_MEMBERS_ONLY_STREAMS);
+        RumbleSettings.getInstance()
+                .setting(doHidePaidContent, RumbleSettings.HIDE_PREMIUM_STREAMS);
     }
 }
