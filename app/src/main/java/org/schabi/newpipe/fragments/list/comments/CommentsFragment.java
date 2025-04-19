@@ -12,11 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.brave.fragments.BraveEventBusBaseListInfoFragment;
 import org.schabi.newpipe.error.UserAction;
 import org.schabi.newpipe.extractor.ListExtractor;
 import org.schabi.newpipe.extractor.comments.CommentsInfo;
 import org.schabi.newpipe.extractor.comments.CommentsInfoItem;
-import org.schabi.newpipe.fragments.list.BaseListInfoFragment;
 import org.schabi.newpipe.info_list.ItemViewMode;
 import org.schabi.newpipe.ktx.ViewUtils;
 import org.schabi.newpipe.util.ExtractorHelper;
@@ -24,7 +24,8 @@ import org.schabi.newpipe.util.ExtractorHelper;
 import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
-public class CommentsFragment extends BaseListInfoFragment<CommentsInfoItem, CommentsInfo> {
+public class CommentsFragment
+        extends BraveEventBusBaseListInfoFragment<CommentsInfoItem, CommentsInfo> {
     private final CompositeDisposable disposables = new CompositeDisposable();
 
     private TextView emptyStateDesc;

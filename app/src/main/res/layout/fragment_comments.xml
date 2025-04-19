@@ -4,8 +4,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <include layout="@layout/brave_replies_main_header" />
+
     <org.schabi.newpipe.views.NewPipeRecyclerView
         android:id="@+id/items_list"
+        android:layout_below="@id/replies_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"

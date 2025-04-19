@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.brave.bus.BraveBus;
+import org.schabi.newpipe.brave.bus.events.BraveEvents;
 import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.comments.CommentsInfoItem;
 import org.schabi.newpipe.info_list.InfoItemBuilder;
@@ -178,8 +180,12 @@ public class CommentInfoItemHolder extends InfoItemHolder {
     }
 
     private void openCommentReplies(@NonNull final CommentsInfoItem item) {
-        NavigationHelper.openCommentRepliesFragment((FragmentActivity) itemBuilder.getContext(),
-                item);
+        if (BraveBus.Helpers.isPrefCommentRepliesSameWindowEnabled()) {
+            BraveBus.getBus().post(new BraveEvents.EventShowCommentRepliesFragment(item));
+        } else {
+            NavigationHelper.openCommentRepliesFragment((FragmentActivity) itemBuilder.getContext(),
+                    item);
+        }
     }
 
     private void allowLinkFocus() {

@@ -65,6 +65,7 @@ import com.google.android.material.tabs.TabLayout;
 
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
+import org.schabi.newpipe.brave.fragments.BraveHostFragment;
 import org.schabi.newpipe.database.stream.model.StreamEntity;
 import org.schabi.newpipe.databinding.FragmentVideoDetailBinding;
 import org.schabi.newpipe.download.DownloadDialog;
@@ -83,7 +84,6 @@ import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.StreamType;
 import org.schabi.newpipe.extractor.stream.VideoStream;
 import org.schabi.newpipe.fragments.BackPressable;
-import org.schabi.newpipe.fragments.BaseStateFragment;
 import org.schabi.newpipe.fragments.EmptyFragment;
 import org.schabi.newpipe.fragments.MainFragment;
 import org.schabi.newpipe.fragments.list.comments.CommentsFragment;
@@ -135,7 +135,7 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public final class VideoDetailFragment
-        extends BaseStateFragment<StreamInfo>
+        extends BraveVideoDetailFragment
         implements BackPressable,
         PlayerServiceExtendedEventListener,
         OnKeyDownListener {
@@ -334,6 +334,7 @@ public final class VideoDetailFragment
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
                              final Bundle savedInstanceState) {
         binding = FragmentVideoDetailBinding.inflate(inflater, container, false);
+        braveSetBinding(binding);
         return binding.getRoot();
     }
 
@@ -687,6 +688,10 @@ public final class VideoDetailFragment
 
     @Override
     public boolean onBackPressed() {
+        if (braveOnBackPressed()) {
+            return true;
+        }
+
         if (DEBUG) {
             Log.d(TAG, "onBackPressed() called");
         }
@@ -883,8 +888,8 @@ public final class VideoDetailFragment
         tabContentDescriptions.clear();
 
         if (shouldShowComments()) {
-            pageAdapter.addFragment(
-                    CommentsFragment.getInstance(serviceId, url, title), COMMENTS_TAB_TAG);
+            pageAdapter.addFragment(BraveHostFragment.newInstance(
+                    CommentsFragment.getInstance(serviceId, url, title)), COMMENTS_TAB_TAG);
             tabIcons.add(R.drawable.ic_comment);
             tabContentDescriptions.add(R.string.comments_tab_description);
         }

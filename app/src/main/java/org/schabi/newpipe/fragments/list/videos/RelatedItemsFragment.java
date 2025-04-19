@@ -20,7 +20,7 @@ import org.schabi.newpipe.extractor.InfoItem;
 import org.schabi.newpipe.extractor.ListExtractor;
 import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.StreamInfoItem;
-import org.schabi.newpipe.fragments.list.BaseListInfoFragment;
+import org.schabi.newpipe.brave.fragments.BraveEventBusBaseListInfoFragment;
 import org.schabi.newpipe.info_list.ItemViewMode;
 import org.schabi.newpipe.info_list.dialog.InfoItemDialog;
 import org.schabi.newpipe.ktx.ViewUtils;
@@ -30,7 +30,8 @@ import java.util.function.Supplier;
 
 import io.reactivex.rxjava3.core.Single;
 
-public class RelatedItemsFragment extends BaseListInfoFragment<InfoItem, RelatedItemsInfo>
+public class RelatedItemsFragment
+        extends BraveEventBusBaseListInfoFragment<InfoItem, RelatedItemsInfo>
         implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static final String INFO_KEY = "related_info_key";
 

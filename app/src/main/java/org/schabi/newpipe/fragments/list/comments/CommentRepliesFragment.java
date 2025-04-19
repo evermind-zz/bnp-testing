@@ -19,7 +19,6 @@ import org.schabi.newpipe.databinding.CommentRepliesHeaderBinding;
 import org.schabi.newpipe.error.UserAction;
 import org.schabi.newpipe.extractor.ListExtractor;
 import org.schabi.newpipe.extractor.comments.CommentsInfoItem;
-import org.schabi.newpipe.fragments.list.BaseListInfoFragment;
 import org.schabi.newpipe.info_list.ItemViewMode;
 import org.schabi.newpipe.util.DeviceUtils;
 import org.schabi.newpipe.util.ExtractorHelper;
@@ -36,7 +35,7 @@ import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 public final class CommentRepliesFragment
-        extends BaseListInfoFragment<CommentsInfoItem, CommentRepliesInfo> {
+        extends BraveCommentRepliesFragment {
 
     public static final String TAG = CommentRepliesFragment.class.getSimpleName();
 
@@ -52,6 +51,14 @@ public final class CommentRepliesFragment
     // only called by the Android framework, after which readFrom is called and restores all data
     public CommentRepliesFragment() {
         super(UserAction.REQUESTED_COMMENT_REPLIES);
+    }
+
+    @Override
+    protected void initViews(
+            final View rootView,
+            final Bundle savedInstanceState) {
+        super.initViews(rootView, savedInstanceState);
+        braveInitReplyTitleAndCustomBackButton(rootView, commentsInfoItem);
     }
 
     public CommentRepliesFragment(@NonNull final CommentsInfoItem commentsInfoItem) {

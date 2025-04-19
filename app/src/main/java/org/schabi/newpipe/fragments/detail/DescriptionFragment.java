@@ -21,7 +21,7 @@ import org.schabi.newpipe.util.Localization;
 
 import java.util.List;
 
-public class DescriptionFragment extends BaseDescriptionFragment {
+public class DescriptionFragment extends BraveDescriptionFragment {
 
     @State
     StreamInfo streamInfo;

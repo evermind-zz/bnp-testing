@@ -129,4 +129,16 @@
     <string name="update">Update</string>
     <string name="update_new_version">New version %s</string>
     <!-- end BravePipe Apk upgrade dialog -->
+
+    <!-- begin - settings for comment view handling -->
+    <string name="settings_category_comment_view_handling_title">Comment View Handling</string>
+
+    <string translatable="false" name="brave_settings_comment_replies_same_window_key">brave_settings_comment_replies_same_window_key</string>
+    <string name="brave_settings_comment_replies_same_window_title">Comment Replies same window</string>
+    <string name="brave_settings_comment_replies_same_window_summary">Insert comment replies into comments page.</string>
+
+    <string translatable="false" name="brave_settings_scroll_only_below_player_key">brave_settings_scroll_only_below_player_key</string>
+    <string name="brave_settings_scroll_only_below_player_title">Scroll only below player</string>
+    <string name="brave_settings_scroll_only_below_player_summary">Make video position fixed and only scroll comments/related streams/description/… in pager. (App restart required.)</string>
+    <!-- end - settings for comment view handling -->
 </resources>
