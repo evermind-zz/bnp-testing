@@ -64,7 +64,7 @@ class AboutActivity : AppCompatActivity() {
     /**
      * A placeholder fragment containing a simple view.
      */
-    class AboutFragment : Fragment() {
+    class AboutFragment : BraveAboutFragment() {
         private val compositeDisposable = CompositeDisposable()
 
         private fun Button.openLink(@StringRes url: Int) {
@@ -79,6 +79,8 @@ class AboutActivity : AppCompatActivity() {
             savedInstanceState: Bundle?
         ): View {
             FragmentAboutBinding.inflate(inflater, container, false).apply {
+                braveSetupViews(root, this)
+                braveAddSoftwareComponents(SOFTWARE_COMPONENTS)
                 aboutAppVersion.text = BuildConfig.VERSION_NAME
                 braveMore.braveAppSignature.text = BuildConfig.APPLICATION_ID
                 braveMore.aboutAppFlavor.text = BuildConfig.FLAVOR
