@@ -1,8 +1,10 @@
 package org.schabi.newpipe.about
 
+import android.content.Intent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import org.schabi.newpipe.brave.tip.BraveTipActivity
 import org.schabi.newpipe.databinding.FragmentAboutBinding
 
 class BoolWrapper(isAlreadyAdded: Boolean) {
@@ -15,6 +17,11 @@ open class BraveAboutFragment : Fragment() {
         grp: ViewGroup,
         fragmentAboutBinding: FragmentAboutBinding
     ) {
+        fragmentAboutBinding.braveAbout.braveAboutTip.setOnClickListener {
+            val intent = Intent(context, BraveTipActivity::class.java)
+            context?.startActivity(intent)
+        }
+
         braveSetAllNoneBravePipeViewsGone(grp, fragmentAboutBinding)
     }
 

@@ -141,4 +141,11 @@
     <string name="brave_settings_scroll_only_below_player_title">Scroll only below player</string>
     <string name="brave_settings_scroll_only_below_player_summary">Make video position fixed and only scroll comments/related streams/description/… in pager. (App restart required.)</string>
     <!-- end - settings for comment view handling -->
+
+    <string name="brave_tip_title">Donate/Tipping</string>
+    <string name="brave_tip_summary">If you want to support the project you can simply give a tip. Use one of the options listed below. Thank you very much!</string>
+    <string name="brave_tip_options">Donate/Tipping Options</string>
+    <string name="brave_tip_copy_clipboard">Copy address to clipboard</string>
+    <string name="brave_tip_goto_website">Go To Website</string>
+    <string name="brave_tip_support">Support this project.</string>
 </resources>

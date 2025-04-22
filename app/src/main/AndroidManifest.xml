@@ -112,6 +112,10 @@
             android:excludeFromRecents="true"
             android:exported="false" />
 
+        <activity
+            android:name=".brave.tip.BraveTipActivity"
+            android:exported="false" />
+
         <!-- giga get related -->
         <activity
             android:name=".download.DownloadActivity"

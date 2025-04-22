@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ITEM_ID_DOWNLOADS = -4;
     private static final int ITEM_ID_HISTORY = -5;
     private static final int ITEM_ID_SETTINGS = 0;
-    private static final int ITEM_ID_DONATION = 1;
+    static final int ITEM_ID_DONATION = 1;
     private static final int ITEM_ID_ABOUT = 2;
 
     private static final int ORDER = 0;
