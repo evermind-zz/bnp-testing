@@ -115,7 +115,7 @@ class NewVersionWorker(
         }
 
         // Make a network request to get latest NewPipe data.
-        val response = BraveNewVersionWorkerHelper.getUpdateInfo(NEWPIPE_API_URL)
+        val response = DownloaderImpl.getInstance().get(NEWPIPE_API_URL)
         handleResponse(response)
     }
 

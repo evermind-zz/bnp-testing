@@ -12,17 +12,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.google.android.material.tabs.TabLayoutMediator
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import org.schabi.newpipe.BraveNewVersionWorkerHelper
 import org.schabi.newpipe.BuildConfig
 import org.schabi.newpipe.R
 import org.schabi.newpipe.databinding.ActivityAboutBinding
 import org.schabi.newpipe.databinding.FragmentAboutBinding
-import org.schabi.newpipe.databinding.IncludeBraveAboutBinding
 import org.schabi.newpipe.util.Localization
 import org.schabi.newpipe.util.ThemeHelper
 import org.schabi.newpipe.util.external_communication.ShareUtils
@@ -65,8 +58,6 @@ class AboutActivity : AppCompatActivity() {
      * A placeholder fragment containing a simple view.
      */
     class AboutFragment : BraveAboutFragment() {
-        private val compositeDisposable = CompositeDisposable()
-
         private fun Button.openLink(@StringRes url: Int) {
             setOnClickListener {
                 ShareUtils.openUrlInApp(context, requireContext().getString(url))
@@ -84,7 +75,7 @@ class AboutActivity : AppCompatActivity() {
                 aboutAppVersion.text = BuildConfig.VERSION_NAME
                 braveMore.braveAppSignature.text = BuildConfig.APPLICATION_ID
                 braveMore.aboutAppFlavor.text = BuildConfig.FLAVOR
-                compositeDisposable.add(determineProjectHomepageUrl(braveAbout))
+                braveAbout.braveAboutGithubLink.openLink(R.string.brave_github_url)
                 aboutGithubLink.openLink(R.string.github_url)
                 aboutDonationLink.openLink(R.string.donation_url)
                 aboutWebsiteLink.openLink(R.string.website_url)
@@ -92,27 +83,6 @@ class AboutActivity : AppCompatActivity() {
                 faqLink.openLink(R.string.faq_url)
                 return root
             }
-        }
-
-        private fun determineProjectHomepageUrl(
-            braveAbout: IncludeBraveAboutBinding
-        ): Disposable {
-            return run {
-                Observable.fromCallable { BraveNewVersionWorkerHelper.getProjectUrl() }
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe { projectUrl ->
-                        braveAbout.braveAboutGithubLink
-                            .setOnClickListener {
-                                ShareUtils.openUrlInApp(requireContext(), projectUrl)
-                            }
-                    }
-            }
-        }
-
-        override fun onDestroy() {
-            compositeDisposable.dispose()
-            super.onDestroy()
         }
     }
 
