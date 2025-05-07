@@ -2,7 +2,7 @@
 <resources>
     <string name="brave_about_fork">Due to restrictive project policy, the NewPipeTeam refuses to add platforms that they find offensive. This fork (BravePipe) will not be as restrictive. As long as the platforms work in the spirit of free speech, they could be integrated. Nevertheless, platforms that promote pornography or other degrading things will <b>NOT</b> be included here. This fork will focus only on integrating other platforms. Unrelated patches will be rejected for now. Feel free to suggest which alternative platforms should be included. Any contribution (development/testing/bug report) is greatly appreciated. Currently additional platforms compared to NewPipe:</string>
     <string name="brave_about_title">About this fork</string>
-    <string name="brave_github_url" translatable="false">https://github.com/bravenewpipe</string>
+    <string name="brave_github_url" translatable="false">https://github.com/bravepipeproject</string>
     <string name="brave_supported_platforms" translatable="false">\n\u2022 BitChute\n\u2022 Rumble</string>
 
     <!-- begin - strings for search filter feature (BravePipe Services only) -->
@@ -100,7 +100,7 @@
     <string name="brave_settings">BravePipe Settings</string>
 
     <!-- begin - settings for replacing host domain names -->
-    <string name="brave_settings_host_replace_key">brave_settings_host_replace_key</string>
+    <string name="brave_settings_host_replace_key" translatable="false">brave_settings_host_replace_key</string>
     <string name="brave_settings_host_replace_dialog_title">Select the hosts you want to replace</string>
     <string name="brave_settings_host_replace_title">Replace restricted hosts</string>
     <string name="brave_settings_host_replace_summary">In some countries some hosts are restricted but can be replaced by others.</string>
@@ -113,13 +113,13 @@
     <!-- end - settings for update behaviour - aka show dialog and download the apk internally -->
 
     <!-- begin - settings for internal volume control - aka loudness independent of system volume -->
-    <string name="brave_settings_internal_volume_key">brave_settings_internal_volume_key</string>
+    <string name="brave_settings_internal_volume_key" translatable="false">brave_settings_internal_volume_key</string>
     <string name="brave_settings_internal_volume_description"><![CDATA[Onscreen volume slider for loudness control, independent of Android’s system media volume. Swipe along the right edge of the player to reveal a dark grey control. The main system volume slider is still usable]]></string>
     <string name="brave_settings_internal_volume_title">Internal volume control</string>
     <!-- end - settings for internal volume control - aka loudness independent of system volume -->
 
     <!-- begin - settings for hiding youtube members only streams -->
-    <string name="brave_settings_hide_paid_content_key">brave_settings_hide_paid_content_key</string>
+    <string name="brave_settings_hide_paid_content_key" translatable="false">brave_settings_hide_paid_content_key</string>
     <string name="brave_settings_hide_paid_content_description"><![CDATA[If enabled all Youtube/Rumble "members only/premium" videos will not be listed. Requires app restart on already loaded channels/search.]]></string>
     <string name="brave_settings_hide_paid_content_title">Hide Paid Content Videos</string>
     <!-- end - settings for hiding youtube members only streams -->
@@ -145,7 +145,6 @@
     <string name="brave_tip_title">Donate/Tipping</string>
     <string name="brave_tip_summary">If you want to support the project you can simply give a tip. Use one of the options listed below. Thank you very much!</string>
     <string name="brave_tip_options">Donate/Tipping Options</string>
-    <string name="brave_tip_copy_clipboard">Copy address to clipboard</string>
     <string name="brave_tip_goto_website">Go To Website</string>
     <string name="brave_tip_support">Support this project.</string>
 </resources>
