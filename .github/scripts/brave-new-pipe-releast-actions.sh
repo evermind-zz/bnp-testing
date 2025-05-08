@@ -20,8 +20,8 @@ CHANGE_LOG_FILE=$3 # optional
 
 BNP_R_MGR_REPO="bnp-r-mgr"
 
-GITHUB_USER="bravenewpipe"
-RELEASE_REPO="NewPipe"
+GITHUB_USER="bravepipeproject"
+RELEASE_REPO="BravePipe"
 RELEASE_BODY="Apk available at ${GITHUB_USER}/${RELEASE_REPO}@${TAG}](https://github.com/${GITHUB_USER}/${RELEASE_REPO}/releases/tag/${TAG})."
 
 PRERELEASE="false"
