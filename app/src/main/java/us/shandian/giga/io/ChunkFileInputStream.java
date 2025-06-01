@@ -49,15 +49,14 @@ public class ChunkFileInputStream extends SharpStream {
 
     @Override
     public int read() throws IOException {
-        if ((position + 1) > length) {
-            return 0;
+        if (position >= length) {
+            return -1; // EOF
         }
 
         int res = source.read();
         if (res >= 0) {
             position++;
         }
-
         return res;
     }
 
@@ -68,19 +67,22 @@ public class ChunkFileInputStream extends SharpStream {
 
     @Override
     public int read(byte[] b, int off, int len) throws IOException {
+        if (position >= length) {
+            return -1; // EOF
+        }
+
         if ((position + len) > length) {
             len = (int) (length - position);
         }
-        if (len == 0) {
-            return 0;
-        }
 
         int res = source.read(b, off, len);
-        position += res;
+        if (res > 0) {
+            position += res;
 
-        if (onProgress != null && position > progressReport) {
-            onProgress.report(position);
-            progressReport = position + REPORT_INTERVAL;
+            if (onProgress != null && position > progressReport) {
+                onProgress.report(position);
+                progressReport = position + REPORT_INTERVAL;
+            }
         }
 
         return res;
@@ -104,7 +106,11 @@ public class ChunkFileInputStream extends SharpStream {
 
     @Override
     public long available() {
-        return length - position;
+        // If position exceeds length, no bytes are available
+        if (position > length) {
+            return 0;
+        }
+        return Math.min(Long.MAX_VALUE, length - position);
     }
 
     @SuppressWarnings("EmptyCatchBlock")
