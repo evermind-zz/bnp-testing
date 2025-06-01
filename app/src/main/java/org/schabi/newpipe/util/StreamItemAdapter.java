@@ -1,5 +1,6 @@
 package org.schabi.newpipe.util;
 
+import static org.schabi.newpipe.util.BraveStreamInfoWrapperHelper.braveIfStreamIsHlsCalcAndSetSize;
 import static org.schabi.newpipe.extractor.utils.Utils.isNullOrEmpty;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import org.schabi.newpipe.extractor.MediaFormat;
 import org.schabi.newpipe.extractor.downloader.Response;
 import org.schabi.newpipe.extractor.stream.AudioStream;
 import org.schabi.newpipe.extractor.stream.Stream;
+import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.SubtitlesStream;
 import org.schabi.newpipe.extractor.stream.VideoStream;
 import org.schabi.newpipe.extractor.utils.Utils;
@@ -250,11 +252,13 @@ public class StreamItemAdapter<T extends Stream, U extends Stream> extends BaseA
          * of all the streams in a wrapper.
          *
          * @param <X> the stream type's class extending {@link Stream}
+         * @param braveStreamInfo the current stream info
          * @param streamsWrapper the wrapper
          * @return a {@link Single} that returns a boolean indicating if any elements were changed
          */
         @NonNull
         public static <X extends Stream> Single<Boolean> fetchMoreInfoForWrapper(
+                final StreamInfo braveStreamInfo,
                 final StreamInfoWrapper<X> streamsWrapper) {
             final Callable<Boolean> fetchAndSet = () -> {
                 boolean hasChanged = false;
@@ -264,6 +268,12 @@ public class StreamItemAdapter<T extends Stream, U extends Stream> extends BaseA
                     if (!changeSize && !changeFormat) {
                         continue;
                     }
+
+                    if (braveIfStreamIsHlsCalcAndSetSize(stream, braveStreamInfo, streamsWrapper)) {
+                        hasChanged = true;
+                        continue;
+                    }
+
                     final Response response = DownloaderImpl.getInstance()
                             .head(stream.getContent());
                     if (changeSize) {

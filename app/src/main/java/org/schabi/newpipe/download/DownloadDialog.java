@@ -399,7 +399,8 @@ public class DownloadDialog extends BraveDownloadDialog
 
     private void fetchStreamsSize() {
         disposables.clear();
-        disposables.add(StreamInfoWrapper.fetchMoreInfoForWrapper(wrappedVideoStreams)
+        disposables.add(StreamInfoWrapper.fetchMoreInfoForWrapper(currentInfo,
+                wrappedVideoStreams)
                 .subscribe(result -> {
                     if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId()
                             == R.id.video_button) {
@@ -409,7 +410,8 @@ public class DownloadDialog extends BraveDownloadDialog
                         new ErrorInfo(throwable, UserAction.DOWNLOAD_OPEN_DIALOG,
                                 "Downloading video stream size",
                                 currentInfo.getServiceId()))));
-        disposables.add(StreamInfoWrapper.fetchMoreInfoForWrapper(getWrappedAudioStreams())
+        disposables.add(StreamInfoWrapper.fetchMoreInfoForWrapper(currentInfo,
+                getWrappedAudioStreams())
                 .subscribe(result -> {
                     if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId()
                             == R.id.audio_button) {
@@ -419,7 +421,8 @@ public class DownloadDialog extends BraveDownloadDialog
                         new ErrorInfo(throwable, UserAction.DOWNLOAD_OPEN_DIALOG,
                                 "Downloading audio stream size",
                                 currentInfo.getServiceId()))));
-        disposables.add(StreamInfoWrapper.fetchMoreInfoForWrapper(wrappedSubtitleStreams)
+        disposables.add(StreamInfoWrapper.fetchMoreInfoForWrapper(currentInfo,
+                        wrappedSubtitleStreams)
                 .subscribe(result -> {
                     if (dialogBinding.videoAudioGroup.getCheckedRadioButtonId()
                             == R.id.subtitle_button) {
