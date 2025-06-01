@@ -94,6 +94,11 @@ public class DownloadMission extends Mission {
     public Postprocessing psAlgorithm;
 
     /**
+     * store arbitrary data. Object should be serializable.
+     */
+    public Object braveArbitraryData;
+
+    /**
      * The current resource to download, {@code urls[current]} and {@code offsets[current]}
      */
     public int current;

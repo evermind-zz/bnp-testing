@@ -79,6 +79,18 @@ open class BraveAboutFragment : Fragment() {
                 "https://github.com/evermind-zz/OsExt", StandardLicenses.GPL3
             )
         )
+        softwareComponents.add(
+            SoftwareComponent(
+                "HlsDownloader", "2025", "evermind-zz",
+                "https://github.com/evermind-zz/HlsDownloader", StandardLicenses.GPL3
+            )
+        )
+        softwareComponents.add(
+            SoftwareComponent(
+                "slimhls-converter", "2025", "evermind-zz",
+                "https://github.com/evermind-zz/slimhls-converter", StandardLicenses.GPL3
+            )
+        )
     }
 
     companion object {

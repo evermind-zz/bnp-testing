@@ -37,7 +37,6 @@ import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.collection.SparseArrayCompat;
 import androidx.documentfile.provider.DocumentFile;
-import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 
 import com.evernote.android.state.State;
@@ -96,7 +95,7 @@ import us.shandian.giga.service.DownloadManagerService;
 import us.shandian.giga.service.DownloadManagerService.DownloadManagerBinder;
 import us.shandian.giga.service.MissionState;
 
-public class DownloadDialog extends DialogFragment
+public class DownloadDialog extends BraveDownloadDialog
         implements RadioGroup.OnCheckedChangeListener, AdapterView.OnItemSelectedListener {
     private static final String TAG = "DialogFragment";
     private static final boolean DEBUG = MainActivity.DEBUG;
@@ -186,7 +185,8 @@ public class DownloadDialog extends DialogFragment
         // TODO: Adapt this code when the downloader support other types of stream deliveries
         final List<VideoStream> videoStreams = ListHelper.getSortedStreamVideosList(
                 context,
-                getStreamsOfSpecifiedDelivery(info.getVideoStreams(), PROGRESSIVE_HTTP),
+                braveAddHlsStreams(info,
+                        getStreamsOfSpecifiedDelivery(info.getVideoStreams(), PROGRESSIVE_HTTP)),
                 getStreamsOfSpecifiedDelivery(info.getVideoOnlyStreams(), PROGRESSIVE_HTTP),
                 false,
                 // If there are multiple languages available, prefer streams without audio
@@ -1097,6 +1097,10 @@ public class DownloadDialog extends DialogFragment
                 final SecondaryStreamHelper<AudioStream> secondary = videoStreamsAdapter
                         .getAllSecondary()
                         .get(wrappedVideoStreams.getStreamsList().indexOf(selectedStream));
+
+                if (braveIsHlsStream(selectedStream)) {
+                    psName = Postprocessing.ALGORITHM_BRAVE_HLS_REMUXER;
+                }
 
                 if (secondary != null) {
                     secondaryStream = secondary.getStream();

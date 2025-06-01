@@ -420,6 +420,9 @@ project.afterEvaluate {
 def okHttpVersion = "4.12.0"
 // for JavaNetCookieJar see https://github.com/bravepipeproject/BravePipeExtractor/issues/123
 project.getDependencies().implementation("com.squareup.okhttp3:okhttp-urlconnection:${okHttpVersion}")
+// for hls support on rumble
+project.getDependencies().implementation('com.github.evermind-zz:hlsdownloader:1.0.0')
+project.getDependencies().implementation('com.github.evermind-zz:slimhls-converter:1.0.0')
 configurations.all {
     exclude group: 'com.github.TeamNewPipe.NewPipeExtractor', module: 'NewPipeExtractor'
 
