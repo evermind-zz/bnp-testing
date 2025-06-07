@@ -19,6 +19,7 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        maven { url "https://raw.githubusercontent.com/evermind-zz/maven-repo/master/repository" }
         maven { url "https://jitpack.io" }
         maven { url "https://repo.clojars.org" }
     }
