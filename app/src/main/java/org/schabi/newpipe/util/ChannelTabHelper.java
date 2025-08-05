@@ -24,6 +24,7 @@ public final class ChannelTabHelper {
     public static boolean isStreamsTab(final FilterItem tab) {
         return tab.equals(ChannelTabs.VIDEOS)
                 || tab.equals(ChannelTabs.TRACKS)
+                || tab.equals(ChannelTabs.LIKES)
                 || tab.equals(ChannelTabs.SHORTS)
                 || tab.equals(ChannelTabs.LIVESTREAMS);
     }
@@ -57,6 +58,8 @@ public final class ChannelTabHelper {
             return R.string.show_channel_tabs_playlists;
         } else if (tab.equals(ChannelTabs.ALBUMS)) {
             return R.string.show_channel_tabs_albums;
+        } else if (tab.equals(ChannelTabs.LIKES)) {
+            return R.string.show_channel_tabs_likes;
         }
         return -1;
     }
@@ -71,6 +74,8 @@ public final class ChannelTabHelper {
             return R.string.fetch_channel_tabs_shorts;
         } else if (tab.equals(ChannelTabs.LIVESTREAMS)) {
             return R.string.fetch_channel_tabs_livestreams;
+        } else if (tab.equals(ChannelTabs.LIKES)) {
+            return R.string.fetch_channel_tabs_likes;
         }
         return -1;
     }
@@ -91,6 +96,8 @@ public final class ChannelTabHelper {
             return R.string.channel_tab_playlists;
         } else if (tab.equals(ChannelTabs.ALBUMS)) {
             return R.string.channel_tab_albums;
+        } else if (tab.equals(ChannelTabs.LIKES)) {
+            return R.string.channel_tab_likes;
         }
         return R.string.unknown_content;
     }

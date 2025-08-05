@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
 import org.schabi.newpipe.R
 import org.schabi.newpipe.databinding.ActivityBraveTipBinding
-import org.schabi.newpipe.util.Localization
 import org.schabi.newpipe.util.ThemeHelper
 
 /**
@@ -15,7 +14,6 @@ import org.schabi.newpipe.util.ThemeHelper
 class BraveTipActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Localization.assureCorrectAppLanguage(this)
         super.onCreate(savedInstanceState)
         ThemeHelper.setTheme(this)
         title = getString(R.string.brave_tip_title)

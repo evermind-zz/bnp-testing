@@ -101,7 +101,7 @@ public class App extends BraveCommonApp {
         NewPipe.init(getDownloader(),
             Localization.getPreferredLocalization(this),
             Localization.getPreferredContentCountry(this));
-        Localization.initPrettyTime(Localization.resolvePrettyTime(getApplicationContext()));
+        Localization.initPrettyTime(Localization.resolvePrettyTime());
 
         BridgeStateSaverInitializer.init(this);
         StateSaver.init(this);

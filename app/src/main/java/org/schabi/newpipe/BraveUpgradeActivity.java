@@ -21,8 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.IntentCompat;
 import androidx.fragment.app.FragmentManager;
 
-import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
-
 
 /**
  * This is a transparent activity with the only purpose to launch the upgrade dialogFragment.
@@ -32,7 +30,6 @@ public class BraveUpgradeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
-        assureCorrectAppLanguage(this);
         super.onCreate(savedInstanceState);
 
         ThemeHelper.setDayNightMode(this);

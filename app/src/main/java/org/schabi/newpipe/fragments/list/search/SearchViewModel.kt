@@ -1,15 +1,18 @@
 package org.schabi.newpipe.fragments.list.search
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import org.schabi.newpipe.extractor.NewPipe
+import org.schabi.newpipe.extractor.StreamingService
 import org.schabi.newpipe.extractor.search.filter.FilterItem
 import org.schabi.newpipe.fragments.list.search.filter.InjectFilterItem
 import org.schabi.newpipe.fragments.list.search.filter.SearchFilterLogic
 import org.schabi.newpipe.fragments.list.search.filter.SearchFilterLogic.Factory.Variant
+import org.schabi.newpipe.util.ServiceHelper
 
 /**
  * This class hosts the search filters logic. It facilitates
@@ -76,6 +79,14 @@ class SearchViewModel(
 
     fun weConsumedDoSearchLiveData() {
         doSearchMutableLiveData.value = false
+    }
+
+    fun getService(): StreamingService? {
+        return NewPipe.getService(serviceId)
+    }
+
+    fun getFilterTitle(item: FilterItem, context: Context): String {
+        return ServiceHelper.getTranslatedFilterString(item.nameId, context)
     }
 
     companion object {

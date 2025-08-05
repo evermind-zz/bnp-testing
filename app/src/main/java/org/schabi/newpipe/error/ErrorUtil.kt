@@ -14,6 +14,7 @@ import androidx.core.app.PendingIntentCompat
 import androidx.fragment.app.Fragment
 import androidx.preference.PreferenceManager
 import com.google.android.material.snackbar.Snackbar
+import org.schabi.newpipe.MainActivity
 import org.schabi.newpipe.R
 
 /**
@@ -37,6 +38,8 @@ class ErrorUtil {
          * activity (since the workflow would be interrupted anyway in that case). So never use this
          * for background services.
          *
+         * If the crashed occurred while the app was in the background open a notification instead
+         *
          * @param context the context to use to start the new activity
          * @param errorInfo the error info to be reported
          */
@@ -46,7 +49,13 @@ class ErrorUtil {
                 return
             }
 
-            context.startActivity(getErrorActivityIntent(context, errorInfo))
+            if (PreferenceManager.getDefaultSharedPreferences(context)
+                .getBoolean(MainActivity.KEY_IS_IN_BACKGROUND, true)
+            ) {
+                createNotification(context, errorInfo)
+            } else {
+                context.startActivity(getErrorActivityIntent(context, errorInfo))
+            }
         }
 
         /**

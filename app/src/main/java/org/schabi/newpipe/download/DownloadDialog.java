@@ -3,7 +3,6 @@ package org.schabi.newpipe.download;
 import static org.schabi.newpipe.extractor.stream.DeliveryMethod.PROGRESSIVE_HTTP;
 import static org.schabi.newpipe.ktx.ViewUtils.animate;
 import static org.schabi.newpipe.util.ListHelper.getStreamsOfSpecifiedDelivery;
-import static org.schabi.newpipe.util.Localization.assureCorrectAppLanguage;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -771,7 +770,6 @@ public class DownloadDialog extends BraveDownloadDialog
     }
 
     private void showFailedDialog(@StringRes final int msg) {
-        assureCorrectAppLanguage(requireContext());
         new AlertDialog.Builder(context)
                 .setTitle(R.string.general_error)
                 .setMessage(msg)
