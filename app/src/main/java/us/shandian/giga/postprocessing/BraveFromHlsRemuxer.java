@@ -18,6 +18,8 @@ import java.io.InputStream;
 import java.net.URI;
 import java.util.List;
 
+import okio.BufferedSink;
+import okio.BufferedSource;
 import okio.Okio;
 import okio.Sink;
 import okio.Source;
@@ -127,11 +129,22 @@ public class BraveFromHlsRemuxer extends Postprocessing {
                 File inFile,
                 SharpStream outStream) throws IOException {
             Source source = Okio.source(inFile);
-            Sink sink = Okio.sink(new SharpOutputStream(outStream));
-            Okio.buffer(source).readAll(Okio.buffer(sink));
-            // close only source the finalOutput stream will be likely closed by the Postprocessing framework.
-            // if we close it here the framework would crash as it is finalizing some related data.
-            source.close();
+            SharpOutputStream sharpOutputStream = new SharpOutputStream(outStream);
+            Sink sink = Okio.sink(sharpOutputStream);
+
+            BufferedSource bufferedSource = Okio.buffer(source);
+            BufferedSink bufferedSink = Okio.buffer(sink);
+
+            // Read all data from source to sink
+            bufferedSource.readAll(bufferedSink);
+
+            // Flush the buffered sink to ensure all data is pushed through
+            bufferedSink.flush();
+
+            // close only the source. The 'out' stream will be properly closed by the
+            // Postprocessing framework in CircularFileWriter.finalizeFile().
+            // If we close it here the framework would crash as it can no longer finalize it
+            bufferedSource.close();
         }
 
         private void createTempDir() {
