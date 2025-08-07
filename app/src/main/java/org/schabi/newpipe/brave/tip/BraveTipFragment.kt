@@ -83,6 +83,10 @@ class BraveTipFragment : Fragment() {
         val NAME: String = BraveTipFragment::class.java.simpleName
         private val TIP_COMPONENTS = arrayListOf(
             BraveTipComponent(
+                "Ko-Fi", false, "https://ko-fi.com/BravePipe",
+                null
+            ),
+            BraveTipComponent(
                 "Bitcoin (Legacy address)", true, null,
                 "1QGHXTzbgWAUn5hKz5x3vuTLpJPQjwPEFx"
             ),
@@ -113,10 +117,6 @@ class BraveTipFragment : Fragment() {
             BraveTipComponent(
                 "Monero", true, null,
                 "84rkqJ4jQxNNuxHHqXXgP84NnSpAAjKC9Udu7HbBLNyYZwauveqCLLGDbxjUR5SWCs7ftwXdLuV9UWvtmdsmWbiuScUMLjR"
-            ),
-            BraveTipComponent(
-                "Ko-Fi", false, "https://ko-fi.com/BravePipe",
-                null
             ),
         )
     }
