@@ -14,6 +14,25 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
 
+/**
+ * FileStreamSAF.
+ * <p>
+ * Robust implementation of a read/write interface for files
+ * opened via the Storage Access Framework (SAF).
+ * <p>
+ * Supports:
+ * - Random access (seek)
+ * - Truncate (setLength)
+ * - Reading & writing
+ * <p>
+ * Notes:
+ * - File must exist and be accessible by the app.
+ * - Not guaranteed to work with virtual cloud files (e.g., Google Drive, Dropbox)
+ *   due to SAF limitations, as some providers may not support random access or
+ *   truncate operations. Test thoroughly with specific cloud providers.
+ * - Not thread-safe. Use ReentrantReadWriteLock for synchronization
+ *   if multi-threaded access is required.
+ */
 public class FileStreamSAF extends SharpStream {
 
     private final FileInputStream in;
@@ -24,20 +43,17 @@ public class FileStreamSAF extends SharpStream {
     private boolean disposed;
 
     public FileStreamSAF(@NonNull ContentResolver contentResolver, Uri fileUri) throws IOException {
-        // Notes:
-        // the file must exists first
-        // ¡read-write mode must allow seek!
-        // It is not guaranteed to work with files in the cloud (virtual files), tested in local storage devices
-
+        // Open file in read-write mode (SAF ensures positioning)
         file = contentResolver.openFileDescriptor(fileUri, "rw");
 
         if (file == null) {
-            throw new IOException("Cannot get the ParcelFileDescriptor for " + fileUri.toString());
+            throw new IOException("Cannot get the ParcelFileDescriptor for " + fileUri);
         }
 
+        // Separate streams for reading and writing (bidirectional)
         in = new FileInputStream(file.getFileDescriptor());
         out = new FileOutputStream(file.getFileDescriptor());
-        channel = out.getChannel();// or use in.getChannel()
+        channel = out.getChannel(); // Channel for seek & truncate
     }
 
     @Override
@@ -57,15 +73,41 @@ public class FileStreamSAF extends SharpStream {
 
     @Override
     public long skip(long amount) throws IOException {
-        return in.skip(amount);// ¿or use channel.position(channel.position() + amount)?
+        long currentPos = channel.position();
+        long fileSize = channel.size();
+        long newPos = currentPos + amount;
+
+        // Check if backward skip is supported
+        if (amount < 0 && newPos < 0) {
+            try {
+                channel.position(0);
+                return -currentPos; // Skipped backward to start of file
+            } catch (IOException e) {
+                throw new IOException("Backward skip not supported at current position", e);
+            }
+        }
+
+        // For forward or backward skips within bounds or beyond EOF
+        try {
+            channel.position(newPos);
+            return amount; // Return requested amount, even if past EOF
+        } catch (IOException e) {
+            // If positioning fails (e.g., due to SAF limitations), try partial skip
+            if (amount > 0 && newPos > fileSize) {
+                channel.position(fileSize);
+                return fileSize - currentPos; // Skipped to EOF
+            }
+            throw new IOException("Skip operation failed", e);
+        }
     }
 
     @Override
     public long available() {
         try {
-            return in.available();
+            return channel.size() - channel.position();
         } catch (IOException e) {
-            return 0;// ¡but not -1!
+            Log.e("FileStreamSAF", "Error calculating available bytes", e);
+            return 0;
         }
     }
 
@@ -79,10 +121,10 @@ public class FileStreamSAF extends SharpStream {
         try {
             disposed = true;
 
-            file.close();
+            channel.close();
             in.close();
             out.close();
-            channel.close();
+            file.close();
         } catch (IOException e) {
             Log.e("FileStreamSAF", "close() error", e);
         }
