@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int ITEM_ID_DOWNLOADS = -4;
     private static final int ITEM_ID_HISTORY = -5;
     private static final int ITEM_ID_SETTINGS = 0;
-    static final int ITEM_ID_DONATION = 1;
+    private static final int ITEM_ID_DONATION = 1;
     private static final int ITEM_ID_ABOUT = 2;
 
     private static final int ORDER = 0;
@@ -305,7 +305,7 @@ public class MainActivity extends AppCompatActivity {
         drawerLayoutBinding.navigation.getMenu()
                 .add(R.id.menu_options_about_group, ITEM_ID_ABOUT, ORDER, R.string.tab_about)
                 .setIcon(R.drawable.ic_info_outline);
-        BraveMainActivityHelper.addBraveDrawers(drawerLayoutBinding, ORDER);
+        BraveMainActivityHelper.addBraveDrawers(this, drawerLayoutBinding, ORDER);
     }
 
     private boolean drawerItemSelected(final MenuItem item) {
