@@ -9,12 +9,22 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Objects;
 
+/**
+ * A custom file writer with a two-tiered write strategy:
+ * - The "out" file: the main file being written to.
+ * - The "aux" file: a temporary overflow buffer to hold excess data
+ *   until it can be safely flushed into the main file.
+ *
+ * This is useful when the final write position (or maximum offset)
+ * isn't always known in advance (e.g., downloading media in chunks),
+ * and prevents overwriting data until it's confirmed safe to do so.
+ */
 public class CircularFileWriter extends SharpStream {
 
-    private static final int QUEUE_BUFFER_SIZE = 8 * 1024;// 8 KiB
-    private static final int COPY_BUFFER_SIZE = 128 * 1024; // 128 KiB
-    private static final int NOTIFY_BYTES_INTERVAL = 64 * 1024;// 64 KiB
-    private static final int THRESHOLD_AUX_LENGTH = 15 * 1024 * 1024;// 15 MiB
+    private static final int QUEUE_BUFFER_SIZE = 8 * 1024;         // 8 KiB internal per-buffer queue
+    private static final int COPY_BUFFER_SIZE = 128 * 1024;        // 128 KiB used when copying from aux to out
+    private static final int NOTIFY_BYTES_INTERVAL = 64 * 1024;    // 64 KiB progress notification threshold
+    private static final int THRESHOLD_AUX_LENGTH = 15 * 1024 * 1024; // 15 MiB aux flush threshold
 
     private final OffsetChecker callback;
 
@@ -32,7 +42,7 @@ public class CircularFileWriter extends SharpStream {
 
         if (!temp.exists()) {
             if (!temp.createNewFile()) {
-                throw new IOException("Cannot create a temporal file");
+                throw new IOException("Cannot create temporary file");
             }
         }
 
@@ -44,34 +54,47 @@ public class CircularFileWriter extends SharpStream {
         reportPosition = NOTIFY_BYTES_INTERVAL;
     }
 
-    private void flushAuxiliar(long amount) throws IOException {
+    /**
+     * Flushes a specified amount of data from the aux file into the main output file.
+     *
+     * This happens when the aux buffer has accumulated too much data or when finalizing.
+     * It also handles the "underflow" condition (where aux has unread data and/or out
+     * hasn't reached its full length yet), ensuring consistency of offsets and lengths.
+     *
+     * @param amount Amount of data (in bytes) to move from aux to out.
+     * @throws IOException if an I/O error occurs
+     */
+    private void flushAuxiliar(final long amount) throws IOException {
         if (aux.length < 1) {
-            return;
+            return; // nothing to flush
         }
 
         out.flush();
         aux.flush();
 
+        // Check for underflow condition:
+        // underflow means either aux still has data not fully written
+        // or out hasn't reached its expected length yet.
         boolean underflow = aux.offset < aux.length || out.offset < out.length;
         byte[] buffer = new byte[COPY_BUFFER_SIZE];
 
         aux.target.seek(0);
         out.target.seek(out.length);
 
-        long length = amount;
-        while (length > 0) {
-            int read = (int) Math.min(length, Integer.MAX_VALUE);
-            read = aux.target.read(buffer, 0, Math.min(read, buffer.length));
+        long remaining = amount;
+        while (remaining > 0) {
+            int read = (int) Math.min(remaining, buffer.length);
+            read = aux.target.read(buffer, 0, read);
 
             if (read < 1) {
-                amount -= length;
-                break;
+                break; // no more data to read
             }
 
             out.writeProof(buffer, read);
-            length -= read;
+            remaining -= read;
         }
 
+        // adjust offsets after flushing
         if (underflow) {
             if (out.offset >= out.length) {
                 // calculate the aux underflow pointer
@@ -93,27 +116,28 @@ public class CircularFileWriter extends SharpStream {
 
         out.length += amount;
 
+        // update the max length seen so far
         if (out.length > maxLengthKnown) {
             maxLengthKnown = out.length;
         }
 
         if (amount < aux.length) {
-            // move the excess data to the beginning of the file
+            // move excess data in aux to the beginning of the aux file (compacting it).
             long readOffset = amount;
             long writeOffset = 0;
 
             aux.length -= amount;
-            length = aux.length;
-            while (length > 0) {
-                int read = (int) Math.min(length, Integer.MAX_VALUE);
-                read = aux.target.read(buffer, 0, Math.min(read, buffer.length));
+            long toMove = aux.length;
+            while (toMove > 0) {
+                int read = (int) Math.min(toMove, buffer.length);
+                read = aux.target.read(buffer, 0, read);
 
                 aux.target.seek(writeOffset);
                 aux.writeProof(buffer, read);
 
                 writeOffset += read;
                 readOffset += read;
-                length -= read;
+                toMove -= read;
 
                 aux.target.seek(readOffset);
             }
@@ -123,15 +147,19 @@ public class CircularFileWriter extends SharpStream {
         }
 
         if (aux.length > THRESHOLD_AUX_LENGTH) {
-            aux.target.setLength(THRESHOLD_AUX_LENGTH);// or setLength(0);
+            aux.target.setLength(THRESHOLD_AUX_LENGTH);
         }
 
         aux.reset();
     }
 
     /**
-     * Flush any buffer and close the output file. Use this method if the
-     * operation is successful
+     * Flushes all buffers and finalizes the file.
+     *
+     * This should be called after all writes are complete.
+     * Ensures that all data (including queues and auxiliary data)
+     * are written into the target file and that the physical file size
+     * matches the calculated final length.
      *
      * @return the final length of the file
      * @throws IOException if an I/O error occurs
@@ -141,8 +169,10 @@ public class CircularFileWriter extends SharpStream {
 
         out.flush();
 
-        // change file length (if required)
-        long length = Math.max(maxLengthKnown, out.length);
+        // calculate final length: main + aux
+        long length = Math.max(maxLengthKnown, out.length + aux.length);
+
+        // ensure file is set to correct final size
         if (length != out.target.length()) {
             out.target.setLength(length);
         }
@@ -201,18 +231,12 @@ public class CircularFileWriter extends SharpStream {
 
         if (usingAux) {
             // before continue calculate the final length of aux
-            long length = offsetAux + len;
-            if (underflow) {
-                if (aux.length > length) {
-                    length = aux.length;// the length is not changed
-                }
-            } else {
-                length = aux.length + len;
-            }
-
+            long newAuxLength = underflow ? Math.max(aux.length, offsetAux + len) : aux.length + len;
+            // write to aux first
             aux.write(b, off, len);
 
-            if (length >= THRESHOLD_AUX_LENGTH && length <= available) {
+            // flush if aux exceeds threshold
+            if (newAuxLength >= THRESHOLD_AUX_LENGTH && newAuxLength <= available) {
                 flushAuxiliar(available);
             }
         } else {
@@ -220,17 +244,18 @@ public class CircularFileWriter extends SharpStream {
                 available = out.length - offsetOut;
             }
 
-            int length = Math.min(len, (int) Math.min(Integer.MAX_VALUE, available));
-            out.write(b, off, length);
+            int writeLen = Math.min(len, (int) Math.min(Integer.MAX_VALUE, available));
+            out.write(b, off, writeLen);
 
-            len -= length;
-            off += length;
+            len -= writeLen;
+            off += writeLen;
 
             if (len > 0) {
                 aux.write(b, off, len);
             }
         }
 
+        // report progress
         if (onProgress != null) {
             long absoluteOffset = out.getOffset() + aux.getOffset();
             if (absoluteOffset > reportPosition) {
@@ -328,14 +353,12 @@ public class CircularFileWriter extends SharpStream {
     }
 
     @Override
-    public int read(byte[] buffer
-    ) {
+    public int read(byte[] buffer) {
         throw new UnsupportedOperationException("write-only");
     }
 
     @Override
-    public int read(byte[] buffer, int offset, int count
-    ) {
+    public int read(byte[] buffer, int offset, int count) {
         throw new UnsupportedOperationException("write-only");
     }
 
@@ -348,10 +371,10 @@ public class CircularFileWriter extends SharpStream {
     public interface OffsetChecker {
 
         /**
-         * Checks the amount of available space ahead
+         * Checks the allowed maximum offset for writes.
          *
-         * @return absolute offset in the file where no more data SHOULD NOT be
-         * written. If the value is -1 the whole file will be used
+         * @return Absolute offset beyond which no more data should be written,
+         * or -1 if no limit applies (the whole file will be used).
          */
         long check();
     }
