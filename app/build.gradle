@@ -77,7 +77,7 @@ android {
         // the amount of trailing zeros depends on the amount of digits the
         // defaultConfig.versionCode has -> we just prepend our increasing
         // versionCode before those zeros.
-        def braveVersionCode = 440000
+        def braveVersionCode = 450000
         // -> our versionName will be added as suffix to defaultConfig.versionName
         // We use major.minor.patch
         def braveVersionName = "2.4.0"
@@ -432,7 +432,7 @@ project.getDependencies().implementation('com.github.evermind-zz:slimhls-convert
 configurations.all {
     exclude group: 'com.github.TeamNewPipe', module: 'NewPipeExtractor'
 
-    project.getDependencies().implementation("com.github.bravepipeproject:BravePipeExtractor:v0.24.6-2.2.8")
+    project.getDependencies().implementation("com.github.bravepipeproject:BravePipeExtractor:v0.24.8-2.2.8")
     project.getDependencies().implementation('org.greenrobot:eventbus:3.3.1')
 
     if (it.getName().contains("braveLegacy") || it.getName().contains("BraveLegacy")) {
