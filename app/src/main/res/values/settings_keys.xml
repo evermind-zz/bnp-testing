@@ -305,6 +305,7 @@
         <item>@string/show_channel_tabs_playlists</item>
         <item>@string/show_channel_tabs_albums</item>
         <item>@string/show_channel_tabs_likes</item>
+        <item>@string/show_channel_tabs_podcasts</item> <!-- BravePipe Feature -->
         <item>@string/show_channel_tabs_about</item>
     </string-array>
     <string-array name="show_channel_tabs_description_list">
@@ -316,6 +317,7 @@
         <item>@string/channel_tab_playlists</item>
         <item>@string/channel_tab_albums</item>
         <item>@string/channel_tab_likes</item>
+        <item>@string/channel_tab_podcasts</item> <!-- BravePipe Feature -->
         <item>@string/channel_tab_about</item>
     </string-array>
     <string name="show_search_suggestions_key">show_search_suggestions</string>
@@ -400,6 +402,7 @@
         <item>@string/fetch_channel_tabs_shorts</item>
         <item>@string/fetch_channel_tabs_livestreams</item>
         <item>@string/fetch_channel_tabs_likes</item>
+        <item>@string/fetch_channel_tabs_podcasts</item> <!-- BravePipe Feature -->
     </string-array>
     <string-array name="feed_fetch_channel_tabs_description_list">
         <item>@string/channel_tab_videos</item>
@@ -407,6 +410,7 @@
         <item>@string/channel_tab_shorts</item>
         <item>@string/channel_tab_livestreams</item>
         <item>@string/channel_tab_likes</item>
+        <item>@string/channel_tab_podcasts</item> <!-- BravePipe Feature -->
     </string-array>
 
     <string name="import_export_data_path">import_export_data_path</string>

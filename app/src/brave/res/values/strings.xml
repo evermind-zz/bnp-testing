@@ -147,4 +147,8 @@
     <string name="brave_tip_options">Donate/Tipping Options</string>
     <string name="brave_tip_goto_website">Go To Website</string>
     <string name="brave_tip_support">Support this project.</string>
+
+    <!-- begin - youtube podcasts feature -->
+    <string name="channel_tab_podcasts">Podcasts</string>
+    <!-- end - youtube podcasts feature -->
 </resources>
