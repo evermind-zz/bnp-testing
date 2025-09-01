@@ -46,8 +46,8 @@ public class BraveUpgradeActivity extends AppCompatActivity {
             final BraveUpgradeInfo braveUpgradeInfo,
             final FragmentManager supportManager
     ) {
-        if (braveUpgradeInfo == null) {
-            Toast.makeText(context, BraveUpgradeInfo.class.getName() + " was null",
+        if (braveUpgradeInfo == null || braveUpgradeInfo.getApkUrl() == null) {
+            Toast.makeText(context, BraveUpgradeInfo.class.getName() + " or getApkUrl was null",
                     Toast.LENGTH_LONG).show();
             return;
         }
