@@ -131,6 +131,10 @@ public final class BraveDownloaderImplUtils {
         public void onSharedPreferenceChanged(
                 final SharedPreferences settings, final String configOption) {
 
+            if (configOption == null) {
+                return;
+            }
+
             final Context context = App.getApp().getApplicationContext();
             if (configOption.equals(
                     context.getString(R.string.brave_settings_host_replace_key))
