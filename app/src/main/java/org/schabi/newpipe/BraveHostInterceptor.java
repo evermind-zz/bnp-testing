@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import androidx.annotation.NonNull;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
@@ -30,6 +31,7 @@ public class BraveHostInterceptor implements Interceptor {
         this.replaceHosts = hosts;
     }
 
+    @NonNull
     @Override
     public okhttp3.Response intercept(final Chain chain) throws IOException {
         final Request request = chain.request();

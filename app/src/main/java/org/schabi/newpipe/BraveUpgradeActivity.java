@@ -71,11 +71,10 @@ public class BraveUpgradeActivity extends AppCompatActivity {
                     }
                 })
                 .setOnClickConfirm(new View.OnClickListener() {
-                    private AppUpdater mAppUpdater;
 
                     @Override
                     public void onClick(final View v) {
-                        mAppUpdater = new AppUpdater.Builder(context)
+                        final AppUpdater mAppUpdater = new AppUpdater.Builder(context)
                                 .setUrl(braveUpgradeInfo.getApkUrl())
                                 .build();
                         final OkHttpManager manager = new OkHttpManager(

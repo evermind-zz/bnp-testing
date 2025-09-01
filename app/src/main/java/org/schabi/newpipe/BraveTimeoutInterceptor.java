@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
+import androidx.annotation.NonNull;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -54,6 +55,7 @@ public class BraveTimeoutInterceptor implements Interceptor {
                 BraveTimeoutInterceptor.class::isInstance).findFirst();
     }
 
+    @NonNull
     @Override
     public okhttp3.Response intercept(final Chain chain) throws IOException {
 
