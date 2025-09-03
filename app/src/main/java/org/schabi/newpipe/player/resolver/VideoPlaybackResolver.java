@@ -32,7 +32,7 @@ import static org.schabi.newpipe.util.ListHelper.getFilteredAudioStreams;
 import static org.schabi.newpipe.util.ListHelper.getUrlAndNonTorrentStreams;
 import static org.schabi.newpipe.util.ListHelper.getPlayableStreams;
 
-public class VideoPlaybackResolver implements PlaybackResolver {
+public class VideoPlaybackResolver extends BraveVideoPlaybackResolver {
     private static final String TAG = VideoPlaybackResolver.class.getSimpleName();
 
     @NonNull
@@ -57,6 +57,7 @@ public class VideoPlaybackResolver implements PlaybackResolver {
     public VideoPlaybackResolver(@NonNull final Context context,
                                  @NonNull final PlayerDataSource dataSource,
                                  @NonNull final QualityResolver qualityResolver) {
+        super(qualityResolver);
         this.context = context;
         this.dataSource = dataSource;
         this.qualityResolver = qualityResolver;
@@ -65,6 +66,7 @@ public class VideoPlaybackResolver implements PlaybackResolver {
     @Override
     @Nullable
     public MediaSource resolve(@NonNull final StreamInfo info) {
+        braveChangeQualityOnRumbleLiveStreams(info);
         final MediaSource liveSource = PlaybackResolver.maybeBuildLiveMediaSource(dataSource, info);
         if (liveSource != null) {
             streamSourceType = SourceType.LIVE_STREAM;
