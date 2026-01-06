@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.CookieManager;
@@ -22,6 +23,8 @@ import java.util.concurrent.TimeUnit;
  */
 @SuppressLint("StaticFieldLeak")
 public final class BraveRumbleCloudflareManager {
+
+    public static final boolean DBG_CF = false; // enable to see some debug messages
 
     public record BypassResult(
             boolean success,
@@ -145,6 +148,8 @@ public final class BraveRumbleCloudflareManager {
                 webView.loadUrl(url);
             });
 
+            dumpCookiesForKnownDomains();
+
             final boolean completed = latch.await(timeoutMs, TimeUnit.MILLISECONDS);
             return new BypassResult(completed &&  success[0], resultContent[0], resultCookies[0]);
         } catch (final InterruptedException e) {
@@ -171,6 +176,21 @@ public final class BraveRumbleCloudflareManager {
 
         currentCookies = (selectedCookies != null) ? selectedCookies : "";
         return currentCookies;
+    }
+
+    private void dumpCookiesForKnownDomains() {
+        if (!DBG_CF) {
+            return;
+        }
+        final CookieManager manager = CookieManager.getInstance();
+        manager.flush();
+
+        for (final String domain : cookieDomains) {
+            final String cookies = manager.getCookie(domain);
+            if (cookies != null && !cookies.isEmpty()) {
+                Log.d("CF_DBG COOKIES", domain + " => " + cookies);
+            }
+        }
     }
 
     public String getCurrentCookies() {

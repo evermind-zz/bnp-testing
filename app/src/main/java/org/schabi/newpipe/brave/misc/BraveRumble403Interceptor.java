@@ -1,5 +1,12 @@
 package org.schabi.newpipe.brave.misc;
 
+import android.os.Handler;
+import android.os.Looper;
+import android.util.Log;
+import android.widget.Toast;
+
+import org.schabi.newpipe.App;
+
 import java.io.IOException;
 import java.util.Optional;
 
@@ -50,6 +57,7 @@ public class BraveRumble403Interceptor implements Interceptor {
         final Response response = chain.proceed(request);
 
         if (response.code() == 200) {
+            debugMessage("CF_DBG 1.0", "", response.code(), cookies, request.url().toString());
             return response;
         }
 
@@ -57,7 +65,14 @@ public class BraveRumble403Interceptor implements Interceptor {
             final BraveRumbleCloudflareManager.BypassResult bypassResult =
                     bypassManager.fetchContentViaWebView(request.url().toString(), 30000);
 
+            debugMessage("CF_DBG 2.0", "", response.code(),
+                    bypassResult.cookies(), request.url().toString());
+
             if (bypassResult.success() && bypassResult.content() != null) {
+
+                debugMessage("CF_DBG 2.1", "webview success", 200,
+                        bypassResult.cookies(), request.url().toString());
+
                 // reuse the webView's content as a proper okHttp response.
                 final Request newRequest = request.newBuilder().build();
                 return new Response.Builder()
@@ -70,6 +85,28 @@ public class BraveRumble403Interceptor implements Interceptor {
             }
         }
 
+        debugMessage("CF_DBG 3.0", "", response.code(), cookies, request.url().toString());
+
         return response;
+    }
+
+    private void debugMessage(
+            final String tag,
+            final String prefix,
+            final int code,
+            final String cookies,
+            final String url
+    ) {
+        if (!BraveRumbleCloudflareManager.DBG_CF) {
+            return;
+        }
+        Log.d(tag, prefix + " code " + code + " cookies " + cookies + " url " + url);
+        new Handler(Looper.getMainLooper()).post(() -> {
+                    Toast.makeText(App.getApp().getApplicationContext(),
+                            tag + " " + prefix + " code " + code + " cookies "
+                                    + cookies + " url " + url,
+                            Toast.LENGTH_SHORT).show();
+                }
+        );
     }
 }
