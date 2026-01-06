@@ -39,14 +39,15 @@ public class BraveRumble403Interceptor implements Interceptor {
             return chain.proceed(request);
         }
 
-        // reuse previously retrieved cookies from the webView
-        final String cookies = bypassManager.getCurrentCookies();
-        final Request.Builder builder = request.newBuilder();
-        if (!cookies.isEmpty()) {
-            builder.header("Cookie", cookies);
-        }
+        //USELESS->DISABLED // reuse previously retrieved cookies from the webView
+        final String cookies = ""; //USELESS->DISABLED bypassManager.getCurrentCookies();
+        //USELESS->DISABLED final Request.Builder builder = request.newBuilder();
+        //USELESS->DISABLED if (!cookies.isEmpty()) {
+        //USELESS->DISABLED     builder.header("Cookie", cookies);
+        //USELESS->DISABLED }
 
-        final Response response = chain.proceed(builder.build());
+        //USELESS->DISABLED final Response response = chain.proceed(builder.build());
+        final Response response = chain.proceed(request);
 
         if (response.code() == 200) {
             return response;
