@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 import org.schabi.newpipe.R
 import org.schabi.newpipe.extractor.Info
+import org.schabi.newpipe.extractor.brave.BraveCloudFlareChallengeException
 import org.schabi.newpipe.extractor.exceptions.AccountTerminatedException
 import org.schabi.newpipe.extractor.exceptions.ContentNotAvailableException
 import org.schabi.newpipe.extractor.exceptions.ContentNotSupportedException
@@ -97,6 +98,7 @@ class ErrorInfo(
                 throwable is ContentNotAvailableException -> R.string.content_not_available
                 throwable != null && throwable.isNetworkRelated -> R.string.network_error
                 throwable is ContentNotSupportedException -> R.string.content_not_supported
+                throwable is BraveCloudFlareChallengeException -> R.string.brave_rumble_cf_info
                 throwable is ExtractionException -> R.string.parsing_error
                 throwable is ExoPlaybackException -> {
                     when (throwable.type) {
