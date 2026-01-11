@@ -7,7 +7,9 @@ import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -75,6 +77,7 @@ public final class BraveRumbleCloudflareManager {
         return instance;
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private void createWebView(final Context context) {
         webView = new WebView(context);
         webView.setLayoutParams(new ViewGroup.LayoutParams(1, 1));
@@ -85,6 +88,25 @@ public final class BraveRumbleCloudflareManager {
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setUserAgentString(DownloaderImpl.USER_AGENT);
+
+        final String versionInfo = Logcat.getDetailedWebViewVersion(context);
+        Log.d("CF_DBG", "WebView Info – " + versionInfo);
+        setupWebViewConsoleLogging();
+    }
+
+    private void setupWebViewConsoleLogging() {
+                webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(final ConsoleMessage consoleMessage) {
+                final String msg = String.format("WebViewConsoleLog: [%s:%d] %s",
+                        consoleMessage.sourceId(),
+                        consoleMessage.lineNumber(),
+                        consoleMessage.message());
+                Log.d("CF_DBG", msg);
+                return true;
+            }
+        });
+
     }
 
     public synchronized BypassResult fetchContentViaWebView(
