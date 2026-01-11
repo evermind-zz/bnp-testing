@@ -103,6 +103,15 @@ open class BraveAboutFragment : Fragment() {
                 StandardLicenses.GPL3
             )
         )
+        softwareComponents.add(
+            SoftwareComponent(
+                "LogcatToolkit",
+                "2017 - 2026",
+                "evermind-zz: LogcatToolkit, (kyze8439690: logcatviewer)",
+                "https://github.com/evermind-zz/logcat-toolkit",
+                StandardLicenses.APACHE2
+            )
+        )
     }
 
     companion object {
