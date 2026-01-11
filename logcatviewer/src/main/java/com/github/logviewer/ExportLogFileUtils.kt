@@ -28,9 +28,20 @@ object ExportLogFileUtils {
                             FileOutputStream(logFile)
                         )
                     )
-                    for (log in logs) {
-                        writer.write(log.origin + "\n")
+
+                    if (logs.isNotEmpty()) {
+                        writer.write("<details><summary><b>Logcat: " + logFile.name)
+                        writer.write("</b>")
+                        writer.write("</summary><p>\n")
+                        writer.write("\n```\n")
+                        for (log in logs) {
+                            writer.write(log.origin + "\n")
+                        }
+                        writer.write("\n```\n")
+                        writer.write("</details>\n")
+                        writer.write("<hr>\n")
                     }
+
                     writer.close()
                     logFile
                 } catch (e: IOException) {
