@@ -26,7 +26,7 @@ import java.util.concurrent.TimeUnit;
 @SuppressLint("StaticFieldLeak")
 public final class BraveRumbleCloudflareManager {
 
-    public static final boolean DBG_CF = false; // enable to see some debug messages
+    public static final boolean DBG_CF = true; // enable to see some debug messages
 
     public record BypassResult(
             boolean success,

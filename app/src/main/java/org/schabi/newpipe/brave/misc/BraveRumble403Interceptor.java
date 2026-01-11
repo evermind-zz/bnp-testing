@@ -1,11 +1,6 @@
 package org.schabi.newpipe.brave.misc;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.schabi.newpipe.App;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -101,12 +96,12 @@ public class BraveRumble403Interceptor implements Interceptor {
             return;
         }
         Log.d(tag, prefix + " code " + code + " cookies " + cookies + " url " + url);
-        new Handler(Looper.getMainLooper()).post(() -> {
-                    Toast.makeText(App.getApp().getApplicationContext(),
-                            tag + " " + prefix + " code " + code + " cookies "
-                                    + cookies + " url " + url,
-                            Toast.LENGTH_SHORT).show();
-                }
-        );
+        //new Handler(Looper.getMainLooper()).post(() -> {
+        //            Toast.makeText(App.getApp().getApplicationContext(),
+        //                    tag + " " + prefix + " code " + code + " cookies "
+        //                            + cookies + " url " + url,
+        //                    Toast.LENGTH_SHORT).show();
+        //        }
+        //);
     }
 }
