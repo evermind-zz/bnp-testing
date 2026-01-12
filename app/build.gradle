@@ -80,7 +80,7 @@ android {
         def braveVersionCode = 500000
         // -> our versionName will be added as suffix to defaultConfig.versionName
         // We use major.minor.patch
-        def braveVersionName = "2.6.0"
+        def braveVersionName = "2.6.0-test"
 
         sponsorblock { // only for strings of sponsorblock stuff
             dimension 'default'
@@ -88,7 +88,7 @@ android {
 
         brave {
             dimension 'default'
-            applicationId "com.github.bravenewpipe"
+            applicationId "com.github.bravenewpipe.test"
             resValue "string", "app_name", "BravePipe"
             versionCode defaultConfig.versionCode + braveVersionCode
             versionName "${defaultConfig.versionName}-${braveVersionName}"
