@@ -7,6 +7,10 @@ import com.github.logviewer.LogcatActivity;
 import org.schabi.newpipe.App;
 import org.schabi.newpipe.R;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Pattern;
+
 import androidx.annotation.NonNull;
 import androidx.preference.Preference;
 
@@ -25,12 +29,16 @@ public class BraveSettingsFragment extends BasePreferenceFragment {
 
 
     private void setupLogcatViewer() {
+        final List<Pattern> logcatExcludeRules = new ArrayList<>();
+        logcatExcludeRules.add(Pattern.compile(".*ViewRootImpl.*PopupWindow.*Relayout.*"));
+
         final Preference pref = findPreference(requireContext().getString(
                 R.string.brave_settings_debug_logcat_viewer_key));
         if (null != pref) {
             pref.setOnPreferenceClickListener(preference -> {
                         LogcatActivity.Companion.start(
-                                requireContext()
+                                requireContext(),
+                                logcatExcludeRules
                         );
                         return true;
                     }
