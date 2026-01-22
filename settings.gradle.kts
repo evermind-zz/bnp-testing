@@ -4,6 +4,7 @@
  */
 
 pluginManagement {
+    includeBuild("build-logic/brave-pipe-plugin")
     repositories {
         gradlePluginPortal()
         google()

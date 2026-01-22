@@ -4,6 +4,7 @@
  */
 
 plugins {
+    id("brave.pipe.plugin")
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.jetbrains.kotlin.kapt)
@@ -429,6 +430,3 @@ configurations.all {
         }
     }
 }
-
-// replace NewPipe with BravePipe in all strings.xml
-// apply(from = "replace-newpipe-with-bravepipe-strings.gradle.kts")
