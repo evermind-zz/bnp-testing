@@ -64,10 +64,10 @@ android {
             if (normalizedWorkingBranch.isEmpty() || workingBranch in defaultBranches) {
                 // default values when branch name could not be determined or is master or dev
                 applicationIdSuffix = ".debug"
-                resValue("string", "app_name", "NewPipe Debug")
+                resValue("string", "app_name", "BravePipe Debug")
             } else {
                 applicationIdSuffix = ".debug.$normalizedWorkingBranch"
-                resValue("string", "app_name", "NewPipe $workingBranch")
+                resValue("string", "app_name", "BravePipe $workingBranch")
             }
         }
 
@@ -79,6 +79,88 @@ android {
             isMinifyEnabled = true
             isShrinkResources = false // disabled to fix F-Droid"s reproducible build
             proguardFiles(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro")
+        }
+    }
+
+    // use productFlavors to keep the name/version changes AFAP for BravePipe
+    // more separate in hope of not getting to many merge conflicts
+    flavorDimensions += "default"
+    productFlavors {
+        // the amount of trailing zeros depends on the amount of digits the
+        // defaultConfig.versionCode has -> we just prepend our increasing
+        // versionCode before those zeros.
+        val braveVersionCode = 500000
+        // -> our versionName will be added as suffix to defaultConfig.versionName
+        // We use major.minor.patch
+        val braveVersionName = "2.6.0"
+
+        create("sponsorblock") { // only for strings of sponsorblock stuff
+            dimension = "default"
+            android.sourceSets.getByName("sponsorblock") {
+                res.srcDirs(listOf(
+                    "src/sponsorblock/res",
+                    android.sourceSets.getByName("sponsorblock").res.srcDirs
+                ))
+            }
+        }
+
+        create("brave") {
+            dimension = "default"
+            applicationId = "com.github.bravenewpipe"
+            resValue("string", "app_name", "BravePipe")
+            versionCode = defaultConfig.versionCode!! + braveVersionCode
+            versionName = "${defaultConfig.versionName}-$braveVersionName"
+
+            android.sourceSets.getByName("brave") {
+                res.srcDirs(listOf(
+                    "src/brave/res",
+                    android.sourceSets.getByName("sponsorblock").res.srcDirs
+                ))
+            }
+        }
+
+        create("braveConscrypt") {
+            dimension = "default"
+            applicationId = "com.github.bravenewpipe"
+            resValue("string", "app_name", "BravePipe")
+            versionCode = defaultConfig.versionCode!! + braveVersionCode
+            versionName = "${defaultConfig.versionName}-$braveVersionName"
+
+            android.sourceSets.getByName("braveConscrypt") {
+                res.srcDirs(listOf(
+                    android.sourceSets.getByName("brave").res.srcDirs
+                ))
+            }
+
+            //noinspection WrongGradleMethod
+            dependencies {
+                "braveConscryptImplementation"("org.conscrypt:conscrypt-android:2.5.2")
+            }
+        }
+
+        create("braveLegacy") {
+            dimension = "default"
+            applicationId = "com.github.bravenewpipe.kitkat"
+            resValue("string", "app_name", "BravePipe Kitkat")
+            versionCode = defaultConfig.versionCode!! + braveVersionCode
+            versionName = "${defaultConfig.versionName}-$braveVersionName"
+
+            android.sourceSets.getByName("braveLegacy") {
+                res.srcDirs(listOf(
+                    "src/braveLegacy/res",
+                    android.sourceSets.getByName("braveConscrypt").res.srcDirs
+                ))
+            }
+
+            multiDexEnabled = true
+            minSdk = 19
+
+            //noinspection WrongGradleMethod
+            dependencies {
+                "braveLegacyImplementation"("androidx.multidex:multidex:2.0.1")
+                "braveLegacyImplementation"("org.conscrypt:conscrypt-android:2.5.2")
+                "braveLegacyImplementation"("com.github.evermind-zz.OsExt:osext-stat:1.0.1")
+            }
         }
     }
 
@@ -148,6 +230,7 @@ tasks.register<Checkstyle>("runCheckstyle") {
     exclude("**/R.java")
     exclude("**/BuildConfig.java")
     exclude("main/java/us/shandian/giga/**")
+    exclude("braveLegacy/java/us/shandian/giga/**")
 
     classpath = configurations.getByName("checkstyle")
 
@@ -185,7 +268,7 @@ tasks.register<CheckDependenciesOrder>("checkDependenciesOrder") {
 }
 
 afterEvaluate {
-    tasks.named("preDebugBuild").configure {
+    tasks.named("preBraveDebugBuild").configure {
         if (!System.getProperties().containsKey("skipFormatKtlint")) {
             dependsOn("formatKtlint")
         }
@@ -304,3 +387,48 @@ dependencies {
     androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.assertj.core)
 }
+
+// keep the changed dependencies for BravePipe more
+// separate in hope of not getting to many merge conflicts
+val okHttpVersion: String = libs.versions.okhttp.get()
+// for JavaNetCookieJar see https://github.com/bravepipeproject/BravePipeExtractor/issues/123
+project.dependencies.implementation("com.squareup.okhttp3:okhttp-urlconnection:$okHttpVersion")
+// for hls support on rumble
+project.dependencies.implementation("com.github.evermind-zz:hlsdownloader:1.0.0")
+project.dependencies.implementation("com.github.evermind-zz:slimhls-converter:1.0.0")
+// rumble cloudflare challenge
+project.dependencies.implementation("com.github.evermind-zz:Cloudflare-Bypass:c4264c53e3")
+// apk upgrade dialog/downloader
+project.dependencies.implementation("com.github.evermind-zz.AppUpdater:app-dialog:1.2.0-1.2.0")
+project.dependencies.implementation("com.github.evermind-zz.AppUpdater:app-updater:1.2.0-1.2.0")
+// the eventbus
+project.dependencies.implementation("org.greenrobot:eventbus:3.3.1")
+project.dependencies.implementation("com.github.bravepipeproject:BravePipeExtractor:v0.24.8-2.3.4")
+
+configurations.all {
+    exclude(group = "com.github.TeamNewPipe", module = "NewPipeExtractor")
+
+    if (name.contains("braveLegacy") || name.contains("BraveLegacy")) {
+        resolutionStrategy.dependencySubstitution {
+
+            substitute(module("com.github.TeamNewPipe:NoNonsense-FilePicker"))
+                .using(module("com.github.bravepipeproject:NoNonsense-FilePicker:21d5c57"))
+                .because("we need Sdk 19 support")
+
+            substitute(module("androidx.appcompat:appcompat"))
+                .using(module("androidx.appcompat:appcompat:1.6.1"))
+                .because("we need Sdk 19 support")
+
+            val legacyOkHttpVersion = "3.12.13"
+            substitute(module("com.squareup.okhttp3:okhttp"))
+                .using(module("com.squareup.okhttp3:okhttp:$legacyOkHttpVersion"))
+                .because("we need Sdk 19 support")
+            substitute(module("com.squareup.okhttp3:okhttp-urlconnection"))
+                .using(module("com.squareup.okhttp3:okhttp-urlconnection:$legacyOkHttpVersion"))
+                .because("we need Sdk 19 support")
+        }
+    }
+}
+
+// replace NewPipe with BravePipe in all strings.xml
+// apply(from = "replace-newpipe-with-bravepipe-strings.gradle.kts")
