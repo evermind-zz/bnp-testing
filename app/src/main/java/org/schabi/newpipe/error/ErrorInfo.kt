@@ -11,9 +11,9 @@ import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 import org.schabi.newpipe.R
 import org.schabi.newpipe.extractor.Info
-import org.schabi.newpipe.extractor.brave.BraveCloudFlareChallengeException
 import org.schabi.newpipe.extractor.ServiceList
 import org.schabi.newpipe.extractor.ServiceList.YouTube
+import org.schabi.newpipe.extractor.brave.BraveCloudFlareChallengeException
 import org.schabi.newpipe.extractor.exceptions.AccountTerminatedException
 import org.schabi.newpipe.extractor.exceptions.AgeRestrictedContentException
 import org.schabi.newpipe.extractor.exceptions.ContentNotAvailableException

@@ -39,7 +39,8 @@ class NewVersionWorker(
         versionName: String,
         apkLocationUrl: String?,
         versionCode: Int,
-        changeLog: String? // from BravePipe's json
+        // from BravePipe's json
+        changeLog: String?
     ) {
         if (BuildConfig.VERSION_CODE >= versionCode) {
             if (inputData.getBoolean(IS_MANUAL, false)) {
