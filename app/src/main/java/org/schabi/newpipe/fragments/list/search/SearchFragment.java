@@ -952,8 +952,9 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
             return null;
         }
         try {
+            final StreamingService service = searchViewModel.getService();
             return service.getSearchQHFactory().getUrl(searchString,
-                    Arrays.asList(contentFilter), sortFilter);
+                    selectedContentFilter, selectedSortFilter);
         } catch (final NullPointerException | ParsingException ignored) {
             return null;
         }
