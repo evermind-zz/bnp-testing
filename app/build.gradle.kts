@@ -410,23 +410,98 @@ configurations.all {
     exclude(group = "com.github.TeamNewPipe", module = "NewPipeExtractor")
 
     if (name.contains("braveLegacy") || name.contains("BraveLegacy")) {
-        resolutionStrategy.dependencySubstitution {
+        braveLegacyFlavorLastWorkingMinSdk19Libraries(resolutionStrategy)
+    }
+}
 
-            substitute(module("com.github.TeamNewPipe:NoNonsense-FilePicker"))
-                .using(module("com.github.bravepipeproject:NoNonsense-FilePicker:21d5c57"))
-                .because("we need Sdk 19 support")
+fun braveLegacyFlavorLastWorkingMinSdk19Libraries(resolutionStrategy: ResolutionStrategy) {
+    resolutionStrategy.dependencySubstitution {
 
-            substitute(module("androidx.appcompat:appcompat"))
-                .using(module("androidx.appcompat:appcompat:1.6.1"))
-                .because("we need Sdk 19 support")
+        substitute(module("com.github.TeamNewPipe:NoNonsense-FilePicker"))
+            .using(module("com.github.bravepipeproject:NoNonsense-FilePicker:21d5c57"))
+            .because("we need Sdk 19 support")
 
-            val legacyOkHttpVersion = "3.12.13"
-            substitute(module("com.squareup.okhttp3:okhttp"))
-                .using(module("com.squareup.okhttp3:okhttp:$legacyOkHttpVersion"))
-                .because("we need Sdk 19 support")
-            substitute(module("com.squareup.okhttp3:okhttp-urlconnection"))
-                .using(module("com.squareup.okhttp3:okhttp-urlconnection:$legacyOkHttpVersion"))
-                .because("we need Sdk 19 support")
-        }
+        val constraintlayout_last_android_sdk19_version = "2.1.4"
+        substitute(module("androidx.constraintlayout:constraintlayout"))
+            .using(module("androidx.constraintlayout:constraintlayout:${constraintlayout_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val appcompat_last_android_sdk19_version = "1.6.1"
+        substitute(module("androidx.appcompat:appcompat"))
+            .using(module("androidx.appcompat:appcompat:${appcompat_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val core_ktx_last_android_sdk19_version = "1.13.0"
+        substitute(module("androidx.core:core-ktx"))
+            .using(module("androidx.core:core-ktx:${core_ktx_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val documentfile_last_android_sdk19_version = "1.0.1"
+        substitute(module("androidx.documentfile:documentfile"))
+            .using(module("androidx.documentfile:documentfile:${documentfile_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val fragment_ktx_last_android_sdk19_version = "1.7.1"
+        substitute(module("androidx.fragment:fragment-ktx"))
+            .using(module("androidx.fragment:fragment-ktx:${fragment_ktx_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val lifecycle_last_android_sdk19_version = "2.8.7"
+        substitute(module("androidx.lifecycle:lifecycle-livedata-ktx"))
+            .using(module("androidx.lifecycle:lifecycle-livedata-ktx:${lifecycle_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+        substitute(module("androidx.lifecycle:lifecycle-viewmodel-ktx"))
+            .using(module("androidx.lifecycle:lifecycle-viewmodel-ktx:${lifecycle_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val localbroadcastmanager_last_android_sdk19_version = "1.1.0"
+        substitute(module("androidx.localbroadcastmanager:localbroadcastmanager"))
+            .using(module("androidx.localbroadcastmanager:localbroadcastmanager:${localbroadcastmanager_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val recyclerview_last_android_sdk19_version = "1.3.2"
+        substitute(module("androidx.recyclerview:recyclerview"))
+            .using(module("androidx.recyclerview:recyclerview:${recyclerview_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val room_last_android_sdk19_version = "2.6.1"
+        substitute(module("androidx.room:room-runtime"))
+            .using(module("androidx.room:room-runtime:${room_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+        substitute(module("androidx.room:room-rxjava3"))
+            .using(module("androidx.room:room-rxjava3:${room_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+        substitute(module("androidx.room:room-compiler"))
+            .using(module("androidx.room:room-compiler:${room_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+        substitute(module("androidx.room:room-testing"))
+            .using(module("androidx.room:room-testing:${room_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val swiperefreshlayout_last_android_sdk19_version = "1.1.0"
+        substitute(module("androidx.swiperefreshlayout:swiperefreshlayout"))
+            .using(module("androidx.swiperefreshlayout:swiperefreshlayout:${swiperefreshlayout_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val androidx_work_last_android_sdk19_version = "2.9.1"
+        substitute(module("androidx.work:work-runtime"))
+            .using(module("androidx.work:work-runtime:${androidx_work_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+        substitute(module("androidx.work:work-rxjava3"))
+            .using(module("androidx.work:work-rxjava3:${androidx_work_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val okhttp_last_android_sdk19_version = "3.12.13"
+        substitute(module("com.squareup.okhttp3:okhttp"))
+            .using(module("com.squareup.okhttp3:okhttp:${okhttp_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+        substitute(module("com.squareup.okhttp3:okhttp-urlconnection"))
+            .using(module("com.squareup.okhttp3:okhttp-urlconnection:${okhttp_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
+
+        val webkit_last_android_sdk19_version = "1.12.0"
+        substitute(module("androidx.webkit:webkit"))
+            .using(module("androidx.webkit:webkit:${webkit_last_android_sdk19_version}"))
+            .because("we need Sdk 19 support")
     }
 }
