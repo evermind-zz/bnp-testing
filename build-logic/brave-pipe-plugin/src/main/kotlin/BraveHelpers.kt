@@ -141,6 +141,7 @@ class BraveLegacyHelpers(
     private val dryRun: Boolean,
     private val appDir: File
 ) {
+    private val braveRegexHelper = BraveRegexHelper()
 
     companion object {
 
@@ -258,5 +259,52 @@ class BraveLegacyHelpers(
             val deleted = if (!dryRun) xmlIconFile.delete() else false
             println("[BraveLegacy] Deleted ${xmlIconFile.name}: $deleted")
         }
+    }
+
+    /**
+     * make java compiler happy using room 2.6.1.
+     *
+     * The last minSdk 19 room version 2.6.1 does not generate correct java code if the input
+     * files are Kotlin and a Collection is used. With 'out' keyword it works.
+     *
+     * -    fun insertAll(entities: Collection<Entity>): List<Long>
+     * +    fun insertAll(entities: Collection<out Entity>): List<Long>
+     *
+     * -> lets replace that for building the braveLegacy flavor
+     */
+    fun alterDaoSourceFiles(
+        targetDir: File,
+        doPrepare: Boolean
+    ) {
+        if (targetDir.absolutePath.contains("src/main/java")) {
+
+            val findStrings = genBasicDAOReplacePattern(doPrepare)
+            val verifyStrings = genBasicDAOReplacePattern(!doPrepare)
+
+            for (x in 0 until findStrings.size) {
+                val findString = findStrings.elementAt(x)
+                val verifyString = verifyStrings.elementAt(x)
+
+                braveRegexHelper.replaceAndVerify(
+                    targetDir,
+                    "org/schabi/newpipe/database/BasicDAO.kt",
+                    findString,
+                    verifyString,
+                    verifyString,
+                    byLine = false,
+                    setOf(BraveRegexHelper.RegexFlag.L)
+                )
+            }
+
+        }
+    }
+
+    private fun genBasicDAOReplacePattern(doPrepare: Boolean): Set<String> {
+        val matchThat = if (doPrepare) "out " else ""
+        val verify = setOf(
+            "fun insertAll(entities: Collection<${matchThat}Entity>): List<Long>",
+            "fun update(entities: Collection<${matchThat}Entity>)"
+        )
+        return verify
     }
 }

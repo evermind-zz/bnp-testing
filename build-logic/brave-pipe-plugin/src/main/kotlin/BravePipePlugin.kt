@@ -100,6 +100,17 @@ class BravePipePlugin : Plugin<Project> {
     }
 
     private fun createBraveLegacyFileAlteringTasks(project: Project) {
+        createBraveLegacyBasicDaoAlteringTask(
+            false,
+            project,
+            BraveTaskNames.TEST_LEGACY_FLAVOR_DAO_PREPARE
+        )
+        createBraveLegacyBasicDaoAlteringTask(
+            true,
+            project,
+            BraveTaskNames.TEST_LEGACY_FLAVOR_DAO_UNPREPARE
+        )
+
         createBraveLegacyFileAlteringTask(
             false,
             project,
@@ -112,5 +123,41 @@ class BravePipePlugin : Plugin<Project> {
             BraveTaskNames.LEGACY_FLAVOR_FILES_UNPREPARE,
             "Restores files after braveLegacy flavor preparation"
         )
+    }
+
+    private fun createBraveLegacyBasicDaoAlteringTask(
+        restoreIt: Boolean,
+        project: Project,
+        name: String
+    ) {
+        project.tasks.register<AlterBraveLegacyBasicDao>(name) {
+            group = "bravetest"
+            description = "altering specific Java/Kotlin files for braveLegacyFlavor"
+
+            sourceDir.set(project.layout.projectDirectory.dir("src/main/java")) // is not used
+            targetDir.set(project.layout.projectDirectory.dir("src/main/java"))
+            appDir.set(project.layout.projectDirectory.asFile)
+            doRestore.set(restoreIt)
+            dryRun.set(false)
+        }
+    }
+
+    private fun createBraveLegacyFileAlteringTask(
+        restoreIt: Boolean,
+        project: Project,
+        name: String,
+        desc: String
+    ) {
+
+        project.tasks.register<PrepareLegacyFlavorTask>(name) {
+            group = "brave"
+            description = desc
+
+            sourceDir.set(project.layout.projectDirectory.dir("src/braveLegacy/java"))
+            tempDir.set(project.layout.projectDirectory.dir("tmp-legacy"))
+            doRestore.set(restoreIt)
+            appDir.set(project.layout.projectDirectory.asFile)
+            dryRun.set(false)
+        }
     }
 }

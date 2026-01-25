@@ -30,6 +30,8 @@ object BraveTaskNames {
         "testLegacyFlavorDrawableNightXmlsCreate"
     const val TEST_LEGACY_FLAVOR_DRAWABLE_NIGHT_XMLS_REMOVE =
         "testLegacyFlavorDrawableNightXmlsRemove"
+    const val TEST_LEGACY_FLAVOR_DAO_PREPARE = "testLegacyFlavorDaoPrepare"
+    const val TEST_LEGACY_FLAVOR_DAO_UNPREPARE = "testLegacyFlavorDaoUnprepare"
 }
 
 
@@ -106,6 +108,9 @@ abstract class PrepareLegacyFlavorTask : DefaultTask() {
         val tmp = tempDir.get().asFile
 
         helpers.prepareFilesForLegacy(src, tmp, doRestore.get())
+        helpers.alterDaoSourceFiles(
+            appDir.get().dir("src/main/java").asFile, doRestore.get()
+        )
         if (doRestore.get()) {
             helpers.removeGeneratedDrawableNightForMainSettings()
         } else {
@@ -132,5 +137,29 @@ abstract class GenerateDrawableNightTask : DefaultTask() {
         } else {
             helpers.legacyFlavorGenerateDrawableNightForMainSettings()
         }
+    }
+}
+
+abstract class AlterBraveLegacyBasicDao : DefaultTask() {
+    @get:InputDirectory
+    abstract val sourceDir: DirectoryProperty
+
+    @get:OutputDirectory
+    abstract val targetDir: DirectoryProperty
+
+    @get:Input
+    abstract val doRestore: Property<Boolean>
+
+    @get:InputDirectory
+    abstract val appDir: DirectoryProperty
+
+    @get:Input
+    abstract val dryRun: Property<Boolean>
+
+    @TaskAction
+    fun execute() {
+        val helpers = BraveLegacyHelpers(dryRun.get(), appDir.get().asFile)
+        val src = targetDir.get().asFile
+        helpers.alterDaoSourceFiles(src, doRestore.get())
     }
 }
