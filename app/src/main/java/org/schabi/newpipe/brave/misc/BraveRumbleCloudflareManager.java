@@ -4,16 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.CookieManager;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 
-import com.ead.lib.cloudflare_bypass.BypassClient;
-
-import org.schabi.newpipe.DownloaderImpl;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+import org.schabi.newpipe.brave.bus.BraveBus;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -22,31 +19,37 @@ import java.util.concurrent.TimeUnit;
  * Wrap around BypassClient to tell cloudflare, that a human is using the app.
  */
 @SuppressLint("StaticFieldLeak")
-public final class BraveRumbleCloudflareManager {
+public final class BraveRumbleCloudflareManager
+        implements BraveRumbleCloudflareEvents.EventCloudflareChallengeResponse.Handler,
+        BraveRumbleCloudflareManagerInterface {
 
-    public static final boolean DBG_CF = false; // enable to see some debug messages
+    public static final boolean DBG_CF = true; // enable to see some debug messages
+    private BraveRumbleCloudflareWebViewHandler handler;
 
-    public record BypassResult(
-            boolean success,
-            String content,
-            String cookies
-    ) { }
+    private volatile CountDownLatch challengeEventResultLatch = null;
+    private BraveBypassResult eventResult = null;
 
+    @Override
+    @Subscribe(sticky = true, threadMode = ThreadMode.BACKGROUND)
+    public void handleEventCloudflareChallengeResponse(
+            final BraveRumbleCloudflareEvents.EventCloudflareChallengeResponse event) {
+        eventResult = event.result;
+        if (challengeEventResultLatch != null) {
+            challengeEventResultLatch.countDown();
+        } else {
+            throw new RuntimeException(
+                    "challengeEventResultLatch == null -> that should never happen");
+        }
+    }
 
     private static volatile BraveRumbleCloudflareManager instance;
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private final String[] cookieDomains = {
-            "https://rumble.com",
-            "rumble.com",
-            ".rumble.com",
-            "https://www.rumble.com",
-            "www.rumble.com"
-    };
     private WebView webView;
     private volatile String currentCookies = "";
 
     private BraveRumbleCloudflareManager(final Context context) {
         final Context appContext = context.getApplicationContext();
+        BraveBus.getBus().register(this);
 
         if (Looper.myLooper() != Looper.getMainLooper()) {
             final CountDownLatch initLatch = new CountDownLatch(1);
@@ -80,124 +83,58 @@ public final class BraveRumbleCloudflareManager {
         webView.setLayoutParams(new ViewGroup.LayoutParams(1, 1));
         webView.setVisibility(View.GONE);
 
-        final WebSettings settings = webView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setDomStorageEnabled(true);
-        settings.setDatabaseEnabled(true);
-        settings.setUserAgentString(DownloaderImpl.USER_AGENT);
+        handler = new BraveRumbleCloudflareWebViewHandler(webView);
     }
 
-    public synchronized BypassResult fetchContentViaWebView(
+    @Override
+    public synchronized BraveBypassResult fetchContentViaWebView(
             final String url,
             final long timeoutMs) {
-        final CountDownLatch latch = new CountDownLatch(1);
-        final String[] resultContent = {null};
-        final String[] resultCookies = {""};
-        final boolean[] success = {false};
+        challengeEventResultLatch = new CountDownLatch(1);
+        //handler.fetchContentViaWebView(url, timeoutMs, true, () -> startDebugActivity(url));
+        handler.fetchContentViaWebView(url, timeoutMs);
 
+        //try {
+        //    // the debugLatch will wait until we receive an event from the the handler
+        //    challengeEventResultLatch.await(timeoutMs, TimeUnit.MILLISECONDS);
+        //} catch (final InterruptedException e) {
+        //    Thread.currentThread().interrupt();
+        //    return new BypassResult(false, null, "");
+        //}
         try {
-            mainHandler.post(() -> {
-                webView.setWebViewClient(new BypassClient() {
-                    @Override
-                    public void onPageFinishedByPassed(
-                            final WebView view,
-                            final String loadedUrl) {
-                        super.onPageFinishedByPassed(view, loadedUrl);
-
-                        final boolean isResultJson = loadedUrl.contains("embedJS");
-                        final String script = isResultJson
-                                ? "document.body.textContent || document.body.innerText"
-                                : "document.documentElement.outerHTML";
-
-                        webView.evaluateJavascript(
-                                "(function() { return " + script + "; })();",
-                                value -> {
-                                    if (value != null && !value.equals("null")) {
-                                        // Remove the surrounding quotation marks
-                                        String raw = value.substring(1, value.length() - 1);
-                                        if (!isResultJson) {
-                                            raw = BraveStringEscapeUtils.unescapeJava(raw);
-                                        }
-                                        resultContent[0] = raw.trim();
-                                    }
-                                    success[0] = true;
-                                    resultCookies[0] = updateAndGetCookies();
-                                    latch.countDown();
-                                }
-                        );
-                    }
-
-                    /**
-                     *  We use the deprecated version as we want only main page errors.
-                     *
-                     * @param view The WebView that is initiating the callback.
-                     * @param errorCode The error code corresponding to an ERROR_* value.
-                     * @param description A String describing the error.
-                     * @param failingUrl The url that failed to load.
-                     */
-                    @Override
-                    public void onReceivedError(
-                            final WebView view,
-                            final int errorCode,
-                            final String description,
-                            final String failingUrl) {
-                        super.onReceivedError(view, errorCode, description, failingUrl);
-                        latch.countDown();
-                    }
-                });
-                webView.loadUrl(url);
-            });
-
-            dumpCookiesForKnownDomains();
-
-            final boolean completed = latch.await(timeoutMs, TimeUnit.MILLISECONDS);
-            return new BypassResult(completed &&  success[0], resultContent[0], resultCookies[0]);
+            challengeEventResultLatch.await(timeoutMs, TimeUnit.MILLISECONDS);
         } catch (final InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return new BypassResult(false, null, currentCookies);
-        }
-    }
+            Thread.currentThread().interrupt();  // Status erhalten
+            // Warte trotzdem weiter (schlecht, aber funktioniert)
+            try {
+                challengeEventResultLatch.await();  // unendlich warten nach Interrupt
+            } catch (final InterruptedException ignored) {
+                return new BraveBypassResult(false, null, "");
 
-    private String updateAndGetCookies() {
-        String selectedCookies = null;
-
-        for (final String domain : cookieDomains) {
-            final String cookies = CookieManager.getInstance().getCookie(domain);
-            if (cookies != null && !cookies.isEmpty()) {
-                if (cookies.contains("__cf")) {
-                    selectedCookies = cookies;
-                    break;  // cancel we found CF-Cookie
-                }
-                if (selectedCookies == null) {
-                    selectedCookies = cookies;  // fallback: first none empty cookie
-                }
             }
         }
 
-        currentCookies = (selectedCookies != null) ? selectedCookies : "";
-        return currentCookies;
-    }
-
-    private void dumpCookiesForKnownDomains() {
-        if (!DBG_CF) {
-            return;
-        }
-        final CookieManager manager = CookieManager.getInstance();
-        manager.flush();
-
-        for (final String domain : cookieDomains) {
-            final String cookies = manager.getCookie(domain);
-            if (cookies != null && !cookies.isEmpty()) {
-                Log.d("CF_DBG COOKIES", domain + " => " + cookies);
-            }
+        if (eventResult != null) {
+            return new BraveBypassResult(
+                    eventResult.success(),
+                    eventResult.content(),
+                    eventResult.cookies()
+            );
+        } else {
+            return new BraveBypassResult(false, null, "");
         }
     }
 
+
+    @Override
     public String getCurrentCookies() {
         return currentCookies;
     }
 
+    @Override
     public void destroy() {
+        BraveBus.getBus().unregister(this);
+        handler.destroy();
         mainHandler.post(() -> {
             if (webView != null) {
                 webView.destroy();

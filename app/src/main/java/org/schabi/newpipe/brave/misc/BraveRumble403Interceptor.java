@@ -1,11 +1,6 @@
 package org.schabi.newpipe.brave.misc;
 
-import android.os.Handler;
-import android.os.Looper;
 import android.util.Log;
-import android.widget.Toast;
-
-import org.schabi.newpipe.App;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -25,9 +20,9 @@ import okhttp3.ResponseBody;
 public class BraveRumble403Interceptor implements Interceptor {
 
     private static final MediaType HTML = MediaType.get("text/html; charset=utf-8");
-    private final BraveRumbleCloudflareManager bypassManager;
+    private final BraveRumbleCloudflareManagerInterface bypassManager;
 
-    public BraveRumble403Interceptor(final BraveRumbleCloudflareManager manager) {
+    public BraveRumble403Interceptor(final BraveRumbleCloudflareManagerInterface manager) {
         this.bypassManager = manager;
     }
 
@@ -56,13 +51,17 @@ public class BraveRumble403Interceptor implements Interceptor {
         //USELESS->DISABLED final Response response = chain.proceed(builder.build());
         final Response response = chain.proceed(request);
 
+        //if (!request.url().toString().contains("https://rumble.com/v")
+        //   && response.code() == 200) {
         if (response.code() == 200) {
             debugMessage("CF_DBG 1.0", "", response.code(), cookies, request.url().toString());
             return response;
         }
 
         if (response.code() == 403) {
-            final BraveRumbleCloudflareManager.BypassResult bypassResult =
+        // if (response.code() == 403 || request.url().toString()
+        //     .contains("https://rumble.com/v")) {
+            final BraveBypassResult bypassResult =
                     bypassManager.fetchContentViaWebView(request.url().toString(), 30000);
 
             debugMessage("CF_DBG 2.0", "", response.code(),
@@ -101,12 +100,16 @@ public class BraveRumble403Interceptor implements Interceptor {
             return;
         }
         Log.d(tag, prefix + " code " + code + " cookies " + cookies + " url " + url);
-        new Handler(Looper.getMainLooper()).post(() -> {
-                    Toast.makeText(App.getApp().getApplicationContext(),
-                            tag + " " + prefix + " code " + code + " cookies "
-                                    + cookies + " url " + url,
-                            Toast.LENGTH_SHORT).show();
-                }
-        );
+        //new Handler(Looper.getMainLooper()).post(() -> {
+        //            Toast.makeText(App.getApp().getApplicationContext(),
+        //                    tag + " " + prefix + " code " + code + " cookies "
+        //                            + cookies + " url " + url,
+        //                    Toast.LENGTH_SHORT).show();
+        //        }
+        //);
+    }
+    public void cleanupBeforeDestroy() {
+        bypassManager.destroy();
+
     }
 }

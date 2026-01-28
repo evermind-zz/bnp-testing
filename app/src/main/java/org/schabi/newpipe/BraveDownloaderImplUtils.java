@@ -4,7 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import org.schabi.newpipe.brave.misc.BraveRumble403Interceptor;
-import org.schabi.newpipe.brave.misc.BraveRumbleCloudflareManager;
+import org.schabi.newpipe.brave.misc.BraveRumbleCloudflareManagerInterface;
+import org.schabi.newpipe.brave.misc.BraveRumbleCloudflareServiceManager;
 import org.schabi.newpipe.extractor.downloader.BraveCookieManager;
 import org.schabi.newpipe.util.image.PicassoHelper;
 
@@ -69,12 +70,20 @@ public final class BraveDownloaderImplUtils {
 
         if (isHandleCloudflareChallengeEnabled) {
             if (rumbleInterceptor.isEmpty()) {
-                final BraveRumbleCloudflareManager manager =
-                        BraveRumbleCloudflareManager.getInstance(context);
+                final BraveRumbleCloudflareManagerInterface manager =
+                        BraveRumbleCloudflareServiceManager.getInstance(context);
+                        //BraveRumbleCloudflareManager.getInstance(context);
+
                 builder.addInterceptor(new BraveRumble403Interceptor(manager));
             }
         } else {
-            rumbleInterceptor.ifPresent(interceptor -> builder.interceptors().remove(interceptor));
+            rumbleInterceptor.ifPresent(interceptor -> {
+                if (interceptor instanceof BraveRumble403Interceptor) {
+                    ((BraveRumble403Interceptor) interceptor).cleanupBeforeDestroy();
+                }
+                builder.interceptors().remove(interceptor);
+
+            });
 
         }
     }
