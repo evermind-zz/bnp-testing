@@ -106,6 +106,9 @@ public class BraveRumbleCloudflareWebViewHandler {
                             final WebView view,
                             final String loadedUrl) {
                         super.onPageFinishedByPassed(view, loadedUrl);
+                        Log.d("CF_DBG", "BypassClient.onPageFinishedByPassed(): "
+                                + "view=" +      view
+                                + "loadedUrl=" + loadedUrl);
 
                         final boolean isResultJson = loadedUrl.contains("embedJS");
                         final String script = isResultJson
@@ -115,6 +118,9 @@ public class BraveRumbleCloudflareWebViewHandler {
                         webView.evaluateJavascript(
                                 "(function() { return " + script + "; })();",
                                 value -> {
+                                    Log.d("CF_DBG", "start WebView.evaluateJavascript(): "
+                                            + "value=" + value
+                                            + "script=" + script);
                                     if (value != null && !value.equals("null")) {
                                         // Remove the surrounding quotation marks
                                         String raw = value.substring(1, value.length() - 1);
@@ -125,6 +131,8 @@ public class BraveRumbleCloudflareWebViewHandler {
                                     }
                                     resultCookies[0] = updateAndGetCookies();
                                     success[0] = true;
+                                    Log.d("CF_DBG", "end WebView.evaluateJavascript(): "
+                                            + "success=" + true);
                                     latch.countDown();
                                 }
                         );
@@ -145,10 +153,17 @@ public class BraveRumbleCloudflareWebViewHandler {
                             final String description,
                             final String failingUrl) {
                         super.onReceivedError(view, errorCode, description, failingUrl);
+                        Log.d("CF_DBG", "BypassClient.onReceivedError(): "
+                                + "view=" +      view
+                                + "errorCode=" + errorCode
+                                + "description=" + description
+                                + "failingUrl=" + failingUrl);
                         latch.countDown();
                     }
                 });
+                Log.d("CF_DBG", "start webView.loadUrl(" + url + ")");
                 webView.loadUrl(url);
+                Log.d("CF_DBG", "end webView.loadUrl(" + url + ")");
             });
 
             dumpCookiesForKnownDomains();
@@ -170,6 +185,7 @@ public class BraveRumbleCloudflareWebViewHandler {
             }
             return;
         } catch (final InterruptedException e) {
+            Log.d("CF_DBG", "Catched InterruptException: ", e);
             Thread.currentThread().interrupt();
             //if (callable != null) {
             //    try {
