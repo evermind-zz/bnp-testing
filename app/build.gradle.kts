@@ -93,7 +93,7 @@ android {
         val braveVersionCode = 510000
         // -> our versionName will be added as suffix to defaultConfig.versionName
         // We use major.minor.patch
-        val braveVersionName = "2.6.0"
+        val braveVersionName = "2.6.0-test"
 
         create("sponsorblock") { // only for strings of sponsorblock stuff
             dimension = "default"
@@ -107,7 +107,7 @@ android {
 
         create("brave") {
             dimension = "default"
-            applicationId = "com.github.bravenewpipe"
+            applicationId = "com.github.bravenewpipe.test"
             resValue("string", "app_name", "BravePipe")
             versionCode = defaultConfig.versionCode!! + braveVersionCode
             versionName = "${defaultConfig.versionName}-$braveVersionName"
