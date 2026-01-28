@@ -4,8 +4,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.webkit.ConsoleMessage;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 
@@ -46,6 +48,25 @@ public class BraveRumbleCloudflareWebViewHandler {
         settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
         settings.setUserAgentString(DownloaderImpl.USER_AGENT);
+
+        final String versionInfo = Logcat.getDetailedWebViewVersion(
+                App.getApp().getApplicationContext());
+        Log.d("CF_DBG", "WebView Info – " + versionInfo);
+        setupWebViewConsoleLogging();
+    }
+
+    private void setupWebViewConsoleLogging() {
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(final ConsoleMessage consoleMessage) {
+                final String msg = String.format("WebViewConsoleLog: [%s:%d] %s",
+                        consoleMessage.sourceId(),
+                        consoleMessage.lineNumber(),
+                        consoleMessage.message());
+                Log.d("CF_DBG", msg);
+                return true;
+            }
+        });
     }
 
     private void callableSafeCaller(
