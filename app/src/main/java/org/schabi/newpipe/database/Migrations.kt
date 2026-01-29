@@ -7,8 +7,8 @@
 package org.schabi.newpipe.database
 
 import android.util.Log
-import androidx.room.migration.Migration
 import org.schabi.newpipe.MainActivity
+import org.schabi.newpipe.database.BraveMigrationsHelper.Migration
 
 object Migrations {
 
