@@ -30,7 +30,7 @@ include (":app")
 
 //includeBuild("../BravePipeExtractor") {
 //    dependencySubstitution {
-//        substitute(module("com.github.bravepipeproject:BravePipeExtractor"))
+//        substitute(module("com.github.bravepipeproject:extractor"))
 //            .using(project(":extractor"))
 //    }
 //}

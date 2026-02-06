@@ -90,7 +90,7 @@ android {
         // the amount of trailing zeros depends on the amount of digits the
         // defaultConfig.versionCode has -> we just prepend our increasing
         // versionCode before those zeros.
-        val braveVersionCode = 520000
+        val braveVersionCode = 530000
         // -> our versionName will be added as suffix to defaultConfig.versionName
         // We use major.minor.patch
         val braveVersionName = "2.6.0"
@@ -411,7 +411,7 @@ project.dependencies.implementation("com.github.evermind-zz.AppUpdater:app-dialo
 project.dependencies.implementation("com.github.evermind-zz.AppUpdater:app-updater:1.2.0-1.2.0")
 // the eventbus
 project.dependencies.implementation("org.greenrobot:eventbus:3.3.1")
-project.dependencies.implementation("com.github.bravepipeproject:extractor:v0.25.1-2.3.4")
+project.dependencies.implementation("com.github.bravepipeproject:extractor:v0.25.2-2.3.4")
 
 configurations.all {
     exclude(group = "com.github.TeamNewPipe", module = "NewPipeExtractor")
