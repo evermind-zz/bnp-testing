@@ -112,6 +112,15 @@ open class BraveAboutFragment : Fragment() {
                 StandardLicenses.APACHE2
             )
         )
+        softwareComponents.add(
+            SoftwareComponent(
+                "challengeFloatsAway",
+                "2026",
+                "evermind-zz",
+                "https://github.com/evermind-zz/challengeFloatsAway",
+                StandardLicenses.GPL3
+            )
+        )
     }
 
     companion object {
