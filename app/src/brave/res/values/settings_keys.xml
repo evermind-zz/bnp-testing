@@ -26,6 +26,10 @@
     <string name="brave_settings_debug_logcat_viewer_key">brave_settings_debug_logcat_viewer_key</string>
     <!-- end - BraveLogcatUiSetup config option data -->
 
+    <!-- begin - BraveLogcatDumper config option data -->
+    <string name="brave_settings_debug_logcat_dumper_key">brave_settings_debug_logcat_dumper_key</string>
+    <!-- end - BraveLogcatDumper config option data -->
+
     <!-- begin - BackupRestoreSettingsFragment config option data -->
     <string name="brave_import_subscriptions">brave_import_subscriptions</string>
     <string name="brave_export_subscriptions">brave_export_subscriptions</string>

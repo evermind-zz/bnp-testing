@@ -168,6 +168,8 @@
 
     <string name="brave_settings_debug_logcat_viewer_title">Logcat Viewer</string>
     <string name="brave_settings_debug_logcat_viewer_summary">View, filter and share BravePipes logcat output.</string>
+    <string name="brave_settings_debug_logcat_dumper_title">Logcat Dumper</string>
+    <string name="brave_settings_debug_logcat_dumper_summary">Include logcat output in error reporting and email.</string>
     <!-- end settings debugging -->
 
     <!-- begin - BackupRestoreSettingsFragment subscriptions import/export -->

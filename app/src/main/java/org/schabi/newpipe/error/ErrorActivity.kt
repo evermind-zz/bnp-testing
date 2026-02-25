@@ -86,6 +86,16 @@ class ErrorActivity : BraveErrorActivity() {
         // print current time, as zoned ISO8601 timestamp
         currentTimeStamp = ZonedDateTime.now().format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
 
+        // overwrite here again -- just leave above alone for less upstream irritation
+        // upstreams uses the current time, we use the time the error happened
+        braveGetErrorCreationTimestamp(currentTimeStamp, errorInfo)
+
+        braveAddCopyLogcatLogButton(
+            this,
+            binding.errorReportCopyButton,
+            errorInfo
+        )
+
         binding.errorReportEmailButton.setOnClickListener { _ ->
             openPrivacyPolicyDialog(this, "EMAIL")
         }
@@ -148,6 +158,7 @@ class ErrorActivity : BraveErrorActivity() {
                         .putExtra(Intent.EXTRA_EMAIL, arrayOf(ERROR_EMAIL_ADDRESS))
                         .putExtra(Intent.EXTRA_SUBJECT, errorEmailSubject)
                         .putExtra(Intent.EXTRA_TEXT, buildJson())
+                    braveAddLogcatLogAttachmentToMail(context, intent, errorInfo)
                     ShareUtils.openIntentInApp(context, intent)
                 } else if (action == "GITHUB") { // open the NewPipe issue page on GitHub
                     ShareUtils.openUrlInApp(this, ERROR_GITHUB_ISSUE_URL)

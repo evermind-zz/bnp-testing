@@ -11,6 +11,7 @@ import java.net.UnknownHostException
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.TypeParceler
 import org.schabi.newpipe.R
+import org.schabi.newpipe.brave.feature.logcat.BraveLogcatDumper
 import org.schabi.newpipe.extractor.Info
 import org.schabi.newpipe.extractor.ServiceList
 import org.schabi.newpipe.extractor.ServiceList.YouTube
@@ -63,7 +64,8 @@ class ErrorInfo private constructor(
      * If present, this resource can alternatively be opened in browser (useful if NewPipe is
      * badly broken).
      */
-    val openInBrowserUrl: String?
+    val openInBrowserUrl: String?,
+    val braveErrorInfoCreationTimestamp: Long
 ) : Parcelable {
 
     @JvmOverloads
@@ -82,7 +84,8 @@ class ErrorInfo private constructor(
         isReportable(throwable),
         isRetryable(throwable),
         (throwable as? ReCaptchaException)?.url,
-        openInBrowserUrl
+        openInBrowserUrl,
+        BraveLogcatDumper.triggerLogCapture()
     )
 
     @JvmOverloads
@@ -101,7 +104,8 @@ class ErrorInfo private constructor(
         throwables.any(::isReportable),
         throwables.isEmpty() || throwables.any(::isRetryable),
         throwables.firstNotNullOfOrNull { it as? ReCaptchaException }?.url,
-        openInBrowserUrl
+        openInBrowserUrl,
+        BraveLogcatDumper.triggerLogCapture()
     )
 
     // constructor to manually build ErrorInfo when no throwable is available
@@ -114,7 +118,8 @@ class ErrorInfo private constructor(
     ) :
         this(
             stackTraces, userAction, request, serviceId, ErrorMessage(message),
-            true, false, null, null
+            true, false, null, null,
+            BraveLogcatDumper.triggerLogCapture()
         )
 
     // constructor with only one throwable to extract service id and openInBrowserUrl from an Info

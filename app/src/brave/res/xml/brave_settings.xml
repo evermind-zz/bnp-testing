@@ -112,5 +112,12 @@
             <!-- we launch it via code -->
         </Preference>
 
+        <SwitchPreferenceCompat
+            android:defaultValue="true"
+            android:key="@string/brave_settings_debug_logcat_dumper_key"
+            android:title="@string/brave_settings_debug_logcat_dumper_title"
+            android:summary="@string/brave_settings_debug_logcat_dumper_summary"
+            app:singleLineTitle="false"
+            app:iconSpaceReserved="false" />
     </PreferenceCategory>
 </PreferenceScreen>
