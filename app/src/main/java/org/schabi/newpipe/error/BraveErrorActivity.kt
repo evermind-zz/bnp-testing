@@ -165,4 +165,6 @@ abstract class BraveErrorActivity : AppCompatActivity() {
         }
         return null
     }
+
+    protected fun braveIsDumperEnabled() = isLogcatDumperEnabled()
 }

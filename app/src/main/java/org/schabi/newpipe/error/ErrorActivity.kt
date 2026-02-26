@@ -113,8 +113,10 @@ class ErrorActivity : BraveErrorActivity() {
         binding.errorMessageView.setTextWithLinks(errorInfo.getMessage(this))
         binding.errorView.text = formErrorText(errorInfo.stackTraces)
 
-        // print stack trace once again for debugging:
-        errorInfo.stackTraces.forEach { Log.e(TAG, it) }
+        if (!braveIsDumperEnabled()) {
+            // print stack trace once again for debugging:
+            errorInfo.stackTraces.forEach { Log.e(TAG, it) }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
