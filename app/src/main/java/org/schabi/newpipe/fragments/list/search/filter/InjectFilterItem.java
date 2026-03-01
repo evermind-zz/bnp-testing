@@ -101,7 +101,7 @@ public abstract class InjectFilterItem {
         private static boolean isYoutubeMusicDividerInjected = false;
 
         protected DividerBetweenYoutubeAndYoutubeMusic() {
-            super(App.getApp().getApplicationContext().getString(R.string.youtube),
+            super(App.getInstance().getApplicationContext().getString(R.string.youtube),
                     YoutubeFilters.ID_CF_MAIN_PLAYLISTS,
                     new DividerItem(R.string.search_filters_youtube_music)
             );

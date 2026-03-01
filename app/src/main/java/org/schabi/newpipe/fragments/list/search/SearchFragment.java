@@ -183,7 +183,7 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
 
     public static SearchFragment getInstance(final int serviceId, final String searchString) {
         final SearchFragment searchFragment;
-        final App app = App.getApp();
+        final App app = App.getInstance();
 
 
         final String searchUi = PreferenceManager.getDefaultSharedPreferences(app)
@@ -1176,7 +1176,7 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
         final FragmentManager fragmentManager = getChildFragmentManager();
         final DialogFragment searchFilterUiDialog;
 
-        final String searchUi = PreferenceManager.getDefaultSharedPreferences(App.getApp())
+        final String searchUi = PreferenceManager.getDefaultSharedPreferences(App.getInstance())
                 .getString(getString(R.string.search_filter_ui_key),
                         getString(R.string.search_filter_ui_value));
         if (getString(R.string.search_filter_ui_option_menu_style_key).equals(searchUi)) {

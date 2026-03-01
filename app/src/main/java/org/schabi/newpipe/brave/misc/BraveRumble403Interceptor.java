@@ -102,7 +102,7 @@ public class BraveRumble403Interceptor implements Interceptor {
         }
         Log.d(tag, prefix + " code " + code + " cookies " + cookies + " url " + url);
         new Handler(Looper.getMainLooper()).post(() -> {
-                    Toast.makeText(App.getApp().getApplicationContext(),
+                    Toast.makeText(App.getInstance().getApplicationContext(),
                             tag + " " + prefix + " code " + code + " cookies "
                                     + cookies + " url " + url,
                             Toast.LENGTH_SHORT).show();

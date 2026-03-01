@@ -69,12 +69,12 @@ public class BraveFromHlsRemuxer extends Postprocessing {
 
         BraveHlsConverterToMp4(DownloadMission mission) {
             this.mission = mission;
-            final Context context = App.getApp().getApplicationContext();
+            final Context context = App.getInstance().getApplicationContext();
             this.tempDir = new File(context.getExternalFilesDir(null), "ffmpeg_temp");
         }
 
         private FFmpegSegmentCombiner createCombiner() {
-            RunFFmpeg runFFmpeg = new RunFFmpeg(App.getApp().getApplicationContext());
+            RunFFmpeg runFFmpeg = new RunFFmpeg(App.getInstance().getApplicationContext());
             return new FFmpegSegmentCombiner(args -> {
                 try {
                     return runFFmpeg.execute(args);

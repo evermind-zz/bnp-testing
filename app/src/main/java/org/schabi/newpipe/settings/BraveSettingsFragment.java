@@ -15,8 +15,7 @@ public class BraveSettingsFragment extends BasePreferenceFragment {
 
     @Override
     public boolean onPreferenceTreeClick(@NonNull final Preference preference) {
-        App.getApp().getExtractorSettings().initExtractorConfig();
+        App.getInstance().getExtractorSettings().initExtractorConfig();
         return super.onPreferenceTreeClick(preference);
     }
-
 }

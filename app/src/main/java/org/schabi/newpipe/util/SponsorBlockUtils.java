@@ -33,7 +33,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public final class SponsorBlockUtils {
-    private static final Application APP = App.getApp();
+    private static final Application APP = App.getInstance();
     private static final String TAG = SponsorBlockUtils.class.getSimpleName();
     private static final boolean DEBUG = MainActivity.DEBUG;
     private static Map<String, VideoSegment[]> videoSegmentsCache = new HashMap<>();
