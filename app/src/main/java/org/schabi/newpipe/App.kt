@@ -1,7 +1,6 @@
 package org.schabi.newpipe
 
 import android.app.ActivityManager
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.core.app.NotificationChannelCompat
@@ -59,7 +58,7 @@ import org.schabi.newpipe.util.potoken.PoTokenProviderImpl
  * along with NewPipe.  If not, see <http://www.gnu.org/licenses/>.
  */
 open class App :
-    Application(),
+    BraveCommonApp(),
     SingletonImageLoader.Factory {
     var isFirstRun = false
         private set
@@ -123,6 +122,8 @@ open class App :
 
         configureRxJavaErrorHandler()
 
+        BraveDownloaderImplUtils.CONFIG.registerOnChanged(applicationContext)
+
         YoutubeStreamExtractor.setPoTokenProvider(PoTokenProviderImpl)
     }
 
@@ -136,7 +137,7 @@ open class App :
         }.build()
 
     protected open fun getDownloader(): Downloader {
-        val downloader = DownloaderImpl.init(null)
+        val downloader = DownloaderImpl.getInstance().init(null)
         setCookiesToDownloader(downloader)
         return downloader
     }
@@ -289,5 +290,10 @@ open class App :
         @JvmStatic
         lateinit var instance: App
             private set
+    }
+
+    override fun onTerminate() {
+        super.onTerminate()
+        BraveDownloaderImplUtils.CONFIG.unRegisterOnChanged(applicationContext)
     }
 }
