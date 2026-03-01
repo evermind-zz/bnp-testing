@@ -16,10 +16,11 @@ import org.schabi.newpipe.R
 import org.schabi.newpipe.extractor.NewPipe
 import org.schabi.newpipe.extractor.ServiceList
 import org.schabi.newpipe.extractor.StreamingService
+import org.schabi.newpipe.extractor.search.filter.LibraryStringIds
 import org.schabi.newpipe.extractor.services.peertube.PeertubeInstance
 import org.schabi.newpipe.ktx.getStringSafe
 
-object ServiceHelper {
+object ServiceHelper : BraveServiceHelper() {
     private val DEFAULT_FALLBACK_SERVICE: StreamingService = ServiceList.YouTube
 
     @JvmStatic
@@ -31,7 +32,7 @@ object ServiceHelper {
             2 -> R.drawable.ic_placeholder_media_ccc
             3 -> R.drawable.ic_placeholder_peertube
             4 -> R.drawable.ic_placeholder_bandcamp
-            else -> R.drawable.ic_circle
+            else -> braveGetIcon(serviceId, R.drawable.ic_circle)
         }
     }
 
@@ -165,4 +166,10 @@ object ServiceHelper {
     fun initServices(context: Context) {
         ServiceList.all().forEach { initService(context, it.serviceId) }
     }
+
+    @JvmStatic
+    fun getTranslatedFilterString(
+        stringId: LibraryStringIds,
+        context: Context
+    ): String = BraveServiceHelper.getTranslatedFilterString(stringId, context)
 }
