@@ -146,7 +146,8 @@ class NewVersionWorker(
         // Parse the json from the response.
         try {
             val newpipeVersionInfo = BraveNewVersionWorkerHelper.getVersionInfo(
-                response.responseBody(), BuildConfig.FLAVOR
+                response.responseBody(),
+                BuildConfig.FLAVOR
             )
 
             val versionName = newpipeVersionInfo.getString("version")

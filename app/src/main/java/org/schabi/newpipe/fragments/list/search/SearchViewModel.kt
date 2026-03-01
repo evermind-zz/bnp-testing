@@ -55,15 +55,18 @@ class SearchViewModel(
 
         searchFilterLogic = SearchFilterLogic.Factory.create(
             logicVariant,
-            NewPipe.getService(serviceId).searchQHFactory, null
+            NewPipe.getService(serviceId).searchQHFactory,
+            null
         )
         searchFilterLogic.restorePreviouslySelectedFilters(
             userSelectedContentFilterList,
             userSelectedSortFilterList
         )
 
-        searchFilterLogic.setCallback { userSelectedContentFilter: List<FilterItem?>,
-            userSelectedSortFilter: List<FilterItem?> ->
+        searchFilterLogic.setCallback {
+                userSelectedContentFilter: List<FilterItem?>,
+                userSelectedSortFilter: List<FilterItem?>
+            ->
             selectedContentFilterMutableLiveData.value =
                 userSelectedContentFilter as MutableList<FilterItem>
             selectedSortFilterLiveData.value =

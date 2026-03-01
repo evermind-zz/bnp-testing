@@ -83,41 +83,59 @@ class BraveTipFragment : Fragment() {
         val NAME: String = BraveTipFragment::class.java.simpleName
         private val TIP_COMPONENTS = arrayListOf(
             BraveTipComponent(
-                "Ko-Fi", false, "https://ko-fi.com/BravePipe",
+                "Ko-Fi",
+                false,
+                "https://ko-fi.com/BravePipe",
                 null
             ),
             BraveTipComponent(
-                "Bitcoin (Legacy address)", true, null,
+                "Bitcoin (Legacy address)",
+                true,
+                null,
                 "1QGHXTzbgWAUn5hKz5x3vuTLpJPQjwPEFx"
             ),
             BraveTipComponent(
-                "Bitcoin (Segwit address)", true, null,
+                "Bitcoin (Segwit address)",
+                true,
+                null,
                 "3QLjHMX7tztZmzZEZXZ2Pgr4CX58ga21Y3"
             ),
             BraveTipComponent(
-                "Bitcoin (Bech32 aka [Native Segwit])", true, null,
+                "Bitcoin (Bech32 aka [Native Segwit])",
+                true,
+                null,
                 "bc1qgwpvw3358z605ppxv2u99jlf558a2ksx0svvp5"
             ),
             BraveTipComponent(
-                "Ethereum", true, null,
+                "Ethereum",
+                true,
+                null,
                 "0x55bD8a63b556232fD164BcE3e1870C886db29Cc9"
             ),
             BraveTipComponent(
-                "Dash", true, null,
+                "Dash",
+                true,
+                null,
                 "Xn9PKVYwbLpwa2NMf9XRFCZXsbsZbGGjYU"
             ),
             BraveTipComponent(
-                "Litecoin", true, null,
+                "Litecoin",
+                true,
+                null,
                 "LX3WhHCh6Pn7kLLqLorqHWs4PoLPpdKmYB"
             ),
             BraveTipComponent(
-                "Zcash", true, null,
+                "Zcash",
+                true,
+                null,
                 "t1gY1p9zdAFoxXamd333zq58nbSaKXXaAPj"
             ),
             BraveTipComponent(
-                "Monero", true, null,
+                "Monero",
+                true,
+                null,
                 "84rkqJ4jQxNNuxHHqXXgP84NnSpAAjKC9Udu7HbBLNyYZwauveqCLLGDbxjUR5SWCs7ftwXdLuV9UWvtmdsmWbiuScUMLjR"
-            ),
+            )
         )
     }
 }

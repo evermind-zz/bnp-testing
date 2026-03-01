@@ -8,5 +8,5 @@ class BraveUpgradeInfo(
 
     val versionName: String?,
     val apkUrl: String?,
-    val changeLog: String?,
+    val changeLog: String?
 ) : Parcelable

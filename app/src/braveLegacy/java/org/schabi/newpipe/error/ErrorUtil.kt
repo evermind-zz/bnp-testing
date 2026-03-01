@@ -136,10 +136,11 @@ class ErrorUtil {
                 )
                     .setSmallIcon(
                         // the vector drawable icon causes crashes on KitKat devices
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                             R.drawable.ic_bug_report
-                        else
+                        } else {
                             android.R.drawable.stat_notify_error
+                        }
                     )
                     .setContentTitle(context.getString(R.string.error_report_notification_title))
                     .setContentText(errorInfo.getMessage(context))
@@ -191,7 +192,8 @@ class ErrorUtil {
         private fun getIsErrorReportsDisabled(context: Context): Boolean {
             val prefs = PreferenceManager.getDefaultSharedPreferences(context)
             return prefs.getBoolean(
-                context.getString(R.string.disable_error_reports_key), false
+                context.getString(R.string.disable_error_reports_key),
+                false
             )
         }
     }

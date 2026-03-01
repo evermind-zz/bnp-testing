@@ -50,7 +50,7 @@ open class BraveAboutFragment : Fragment() {
                 } else {
                     braveSetAllNoneBravePipeViewsGoneRecursive(
                         doSetRemainingViewsGone,
-                        child as ViewGroup,
+                        child,
                         fragmentAboutBinding
                     )
                 }
@@ -64,31 +64,43 @@ open class BraveAboutFragment : Fragment() {
 
     protected fun braveAddSoftwareComponents(softwareComponents: ArrayList<SoftwareComponent>) {
         if (areSoftwareComponentsAlreadyAdded) {
-            return; // run only once
+            return // run only once
         }
         areSoftwareComponentsAlreadyAdded = true
         softwareComponents.add(
             SoftwareComponent(
-                "EventBus", "2012 - 2016", "Markus Junginger",
-                "https://greenrobot.org/eventbus", StandardLicenses.APACHE2
+                "EventBus",
+                "2012 - 2016",
+                "Markus Junginger",
+                "https://greenrobot.org/eventbus",
+                StandardLicenses.APACHE2
             )
         )
         softwareComponents.add(
             SoftwareComponent(
-                "OsExt", "2024", "evermind-zz",
-                "https://github.com/evermind-zz/OsExt", StandardLicenses.GPL3
+                "OsExt",
+                "2024",
+                "evermind-zz",
+                "https://github.com/evermind-zz/OsExt",
+                StandardLicenses.GPL3
             )
         )
         softwareComponents.add(
             SoftwareComponent(
-                "HlsDownloader", "2025", "evermind-zz",
-                "https://github.com/evermind-zz/HlsDownloader", StandardLicenses.GPL3
+                "HlsDownloader",
+                "2025",
+                "evermind-zz",
+                "https://github.com/evermind-zz/HlsDownloader",
+                StandardLicenses.GPL3
             )
         )
         softwareComponents.add(
             SoftwareComponent(
-                "slimhls-converter", "2025", "evermind-zz",
-                "https://github.com/evermind-zz/slimhls-converter", StandardLicenses.GPL3
+                "slimhls-converter",
+                "2025",
+                "evermind-zz",
+                "https://github.com/evermind-zz/slimhls-converter",
+                StandardLicenses.GPL3
             )
         )
     }

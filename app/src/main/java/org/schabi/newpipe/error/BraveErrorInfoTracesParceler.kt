@@ -1,11 +1,11 @@
 package org.schabi.newpipe.error
 
 import android.os.Parcel
-import kotlinx.parcelize.Parceler
 import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
+import kotlinx.parcelize.Parceler
 
 /**
  * The binder can not handle too much data and throws TransactionTooLargeException.
@@ -38,7 +38,6 @@ object BraveErrorInfoTracesParceler : Parceler<Array<String>> {
         return byteOutputStream.toByteArray()
     }
 
-    private fun ungzip(content: ByteArray): String =
-        GZIPInputStream(content.inputStream())
-            .bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
+    private fun ungzip(content: ByteArray): String = GZIPInputStream(content.inputStream())
+        .bufferedReader(StandardCharsets.UTF_8).use { it.readText() }
 }

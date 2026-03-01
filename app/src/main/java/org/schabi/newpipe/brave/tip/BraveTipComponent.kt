@@ -1,8 +1,8 @@
 package org.schabi.newpipe.brave.tip
 
 import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
 import java.io.Serializable
+import kotlinx.parcelize.Parcelize
 
 @Parcelize
 class BraveTipComponent

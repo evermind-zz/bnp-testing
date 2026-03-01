@@ -279,6 +279,7 @@ class ErrorInfo private constructor(
                 // is likely an issue with parsing the website
                 throwable is ExtractionException ->
                     ErrorMessage(R.string.parsing_error)
+
                 // BravePipe: if enabled BraveRumbleCloudflareManager this Exception is rare
                 throwable is BraveCloudFlareChallengeException ->
                     ErrorMessage(R.string.brave_rumble_cf_info)

@@ -109,6 +109,7 @@ class BraveMainPlayerGestureListenerHelper {
     companion object {
         private val TAG = BraveMainPlayerGestureListenerHelper::class.java.simpleName
         private val DEBUG = MainActivity.DEBUG
+
         // the swiping is to fast (one my phone).
         // TODO Verify it does no need tuning/better handling on other phones
         private const val REDUCE_DISTANCE_BY_FACTOR = 4
