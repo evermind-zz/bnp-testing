@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import org.schabi.newpipe.brave.misc.BraveRumble403Interceptor;
 import org.schabi.newpipe.brave.misc.BraveRumbleCloudflareManager;
 import org.schabi.newpipe.extractor.downloader.BraveCookieManager;
-import org.schabi.newpipe.util.image.PicassoHelper;
 
 import java.io.IOException;
 import java.net.CookiePolicy;
@@ -49,7 +48,7 @@ public final class BraveDownloaderImplUtils {
     }
 
     public static void addOrRemoveInterceptors(final OkHttpClient.Builder builder) {
-        final Context context = App.getApp().getApplicationContext();
+        final Context context = App.getInstance().getApplicationContext();
         final SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(context);
 
         addOrRemoveHostInterceptor(builder, context, settings);
@@ -75,7 +74,6 @@ public final class BraveDownloaderImplUtils {
             }
         } else {
             rumbleInterceptor.ifPresent(interceptor -> builder.interceptors().remove(interceptor));
-
         }
     }
 
@@ -160,7 +158,7 @@ public final class BraveDownloaderImplUtils {
                 return;
             }
 
-            final Context context = App.getApp().getApplicationContext();
+            final Context context = App.getInstance().getApplicationContext();
             if (configOption.equals(
                     context.getString(R.string.brave_settings_host_replace_key))
                     || configOption.equals(context.getString(
@@ -171,11 +169,6 @@ public final class BraveDownloaderImplUtils {
                     context.getString(R.string.enable_return_youtube_dislike_key))) {
 
                 DownloaderImpl.getInstance().reInitInterceptors();
-            }
-
-            if (configOption.equals(
-                    context.getString(R.string.brave_settings_host_replace_key))) {
-                PicassoHelper.reInit(context);
             }
         }
 
