@@ -1,6 +1,7 @@
 package org.schabi.newpipe.download;
 
 import android.content.Context;
+import android.view.MenuItem;
 import android.view.View;
 
 import org.schabi.newpipe.databinding.DownloadDialogBinding;
@@ -15,7 +16,6 @@ import org.schabi.newpipe.util.VideoSegment;
 import java.util.ArrayList;
 import java.util.List;
 
-import androidx.appcompat.view.menu.ActionMenuItemView;
 import androidx.fragment.app.DialogFragment;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Single;
@@ -57,7 +57,7 @@ public abstract class BraveDownloadDialog extends DialogFragment {
     // SponsorBlock related methods
     protected void braveSponsorBlockCheckForYoutubeVideoSegments(
             final StreamInfo currentInfo,
-            final ActionMenuItemView okButton,
+            final MenuItem okButton,
             final DownloadDialogBinding dialogBinding) {
         // only lookup SponsorBlock for youtube
         if (currentInfo.getServiceId() != ServiceList.YouTube.getServiceId()) {
