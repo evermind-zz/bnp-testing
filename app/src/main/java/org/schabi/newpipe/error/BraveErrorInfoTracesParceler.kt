@@ -8,7 +8,7 @@ import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
 
 /**
- * The binder can not handle to much data and throws TransactionTooLargeException.
+ * The binder can not handle too much data and throws TransactionTooLargeException.
  *
  * This Parceler tries to skip this fact with temporary gzip the data. Seems to
  * work -- but sending over eMail still needs some truncating

@@ -13,7 +13,6 @@ import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.IntentCompat
 import androidx.core.net.toUri
 import com.grack.nanojson.JsonWriter
@@ -31,7 +30,7 @@ import org.schabi.newpipe.util.text.setTextWithLinks
  * This activity is used to show error details and allow reporting them in various ways.
  * Use [ErrorUtil.openActivity] to correctly open this activity.
  */
-class ErrorActivity : AppCompatActivity() {
+class ErrorActivity : BraveErrorActivity() {
     private lateinit var errorInfo: ErrorInfo
     private lateinit var currentTimeStamp: String
 
@@ -194,7 +193,7 @@ class ErrorActivity : AppCompatActivity() {
                 .value("version", BuildConfig.VERSION_NAME)
                 .value("os", osString)
                 .value("time", currentTimeStamp)
-                .array("exceptions", errorInfo.stackTraces.toList())
+                .array("exceptions", braveTruncateAsNeeded(errorInfo.stackTraces))
                 .value("user_comment", binding.errorCommentBox.getText().toString())
                 .end()
                 .done()
