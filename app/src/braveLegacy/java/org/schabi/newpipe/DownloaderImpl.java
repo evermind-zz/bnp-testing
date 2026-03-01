@@ -62,6 +62,11 @@ public final class DownloaderImpl extends Downloader {
         this.client = builder.build();
     }
 
+    @NonNull
+    public OkHttpClient getClient() {
+        return client;
+    }
+
     /**
      * It's recommended to call exactly once in the entire lifetime of the application.
      *
