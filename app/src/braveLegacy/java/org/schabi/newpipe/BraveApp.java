@@ -1,17 +1,22 @@
 package org.schabi.newpipe;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Build;
 
 import org.conscrypt.Conscrypt;
 import org.schabi.newpipe.settings.BraveVideoAudioSettingsBaseFragment;
 import org.schabi.newpipe.util.BraveTLSSocketFactory;
+import coil3.bravePipeLegacy.PicassoHelper;
 
 import java.security.Security;
 
+import androidx.annotation.Nullable;
 import androidx.multidex.MultiDexApplication;
+import androidx.preference.PreferenceManager;
 
-public class BraveApp extends MultiDexApplication {
+public class BraveApp extends MultiDexApplication
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
     private static Context appContext;
 
     @Override
@@ -26,16 +31,22 @@ public class BraveApp extends MultiDexApplication {
             BraveTLSSocketFactory.setAsDefault();
         }
 
+        PicassoHelper.init(appContext);
+        PicassoHelper.setIndicatorsEnabled(MainActivity.DEBUG);
+
+        PreferenceManager.getDefaultSharedPreferences(appContext)
+                .registerOnSharedPreferenceChangeListener(this);
+
         makeConfigOptionsSuitableForFlavor();
     }
 
     /**
      * Get the application context.
      * <p>
-     * In the {@link App} from main source set there is the static method {@link App#getApp()}
+     * In the {@link App} from main source set there is the static method {@link App#getInstance()}
      * from which many parts of the application get ApplicationContext. But as the class
      * {@link App} inherits from BraveApp and sets the app variable in {@link @App#onCreate()}
-     * only after the {@link BraveApp#onCreate()} is called. Therefore {@link App#getApp()}
+     * only after the {@link BraveApp#onCreate()} is called. Therefore {@link App#getInstance()}
      * has not yet an initialized return valule thus we need another way to get the
      * ApplicationContext
      *
@@ -47,5 +58,19 @@ public class BraveApp extends MultiDexApplication {
 
     private void makeConfigOptionsSuitableForFlavor() {
         BraveVideoAudioSettingsBaseFragment.makeConfigOptionsSuitableForFlavor(getAppContext());
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(
+            final SharedPreferences sharedPreferences,
+            final @Nullable String configOption
+    ) {
+        if (configOption == null) {
+            return;
+        }
+        if (configOption.equals(
+                appContext.getString(R.string.brave_settings_host_replace_key))) {
+            PicassoHelper.reInit(appContext);
+        }
     }
 }
