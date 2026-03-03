@@ -166,6 +166,7 @@ configure<ApplicationExtension> {
                 "braveLegacyImplementation"("androidx.multidex:multidex:2.0.1")
                 "braveLegacyImplementation"("org.conscrypt:conscrypt-android:2.5.2")
                 "braveLegacyImplementation"("com.github.evermind-zz.OsExt:osext-stat:1.0.1")
+                "braveLegacyImplementation"("com.squareup.picasso:picasso:2.8")
             }
         }
     }
@@ -423,6 +424,8 @@ configurations.all {
     exclude(group = "com.github.TeamNewPipe", module = "NewPipeExtractor")
 
     if (name.contains("braveLegacy") || name.contains("BraveLegacy")) {
+        exclude(group = "io.coil-kt.coil3", module = "coil-network-okhttp")
+        exclude(group = "io.coil-kt.coil3", module = "coil-compose-android")
         braveLegacyFlavorLastWorkingMinSdk19Libraries(resolutionStrategy)
     }
 }
