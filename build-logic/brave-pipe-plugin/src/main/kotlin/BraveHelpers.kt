@@ -82,7 +82,7 @@ class BraveHelpers(
         if (targetDir.absolutePath.contains("src/main/java")) {
             braveRegexHelper.replaceAndVerify(
                 targetDir,
-                "org/schabi/newpipe/error/ErrorActivity.java",
+                "org/schabi/newpipe/error/ErrorActivity.kt",
                 "ERROR_EMAIL_ADDRESS = \"crashreport@newpipe.schabi.org\"",
                 "ERROR_EMAIL_ADDRESS = \"crashreport@gmx.com\"",
                 "crashreport@gmx.com",
@@ -94,8 +94,8 @@ class BraveHelpers(
 
             braveRegexHelper.replaceAndVerify(
                 targetDir,
-                "org/schabi/newpipe/error/ErrorActivity.java",
-                "^(\\s*)(public static final String ERROR_GITHUB_ISSUE_URL =)\n[^;]*",
+                "org/schabi/newpipe/error/ErrorActivity.kt",
+                "^(\\s*)(private const val ERROR_GITHUB_ISSUE_URL =).*",
                 "${'$'}1${'$'}2${'$'}1        \"${braveIssueUrl}\"",
                 braveIssueUrl,
                 byLine = false,
