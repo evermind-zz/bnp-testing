@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import org.schabi.newpipe.BraveTimeoutInterceptor;
 import org.schabi.newpipe.DownloaderImpl;
 import org.schabi.newpipe.R;
 import org.schabi.newpipe.extractor.Image;
+import org.schabi.newpipe.util.image.ImageStrategy;
 
 import java.io.File;
 import java.io.IOException;
@@ -248,6 +250,15 @@ public final class PicassoHelper {
                 requestCreator.placeholder(placeholderResId);
             }
             return requestCreator;
+        }
+    }
+
+    /**
+     * fake-Coil dispose() compatibility for legacy flavor.
+     */
+    public static void cancelRequest(final ImageView imageView) {
+        if (imageView != null) {
+            picassoInstance.cancelRequest(imageView);
         }
     }
 }
