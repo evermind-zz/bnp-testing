@@ -76,7 +76,7 @@ class ErrorInfo private constructor(
         serviceId: Int? = null,
         openInBrowserUrl: String? = null
     ) : this(
-        BraveErrorInfoHelper.logStackTraces(throwableToStringList(throwable)),
+        BraveErrorInfoHelper.logStackTraces(throwable),
         userAction,
         request,
         serviceId,
@@ -96,7 +96,7 @@ class ErrorInfo private constructor(
         serviceId: Int? = null,
         openInBrowserUrl: String? = null
     ) : this(
-        BraveErrorInfoHelper.logStackTraces(throwableListToStringList(throwables)),
+        BraveErrorInfoHelper.logStackTraces(throwables),
         userAction,
         request,
         serviceId,
