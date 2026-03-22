@@ -179,4 +179,19 @@
     <string name="export_subscriptions_summary">Export your subscriptions to a .json file</string>
     <string name="import_from_previous_export">Import from previous export</string>
     <!-- end - BackupRestoreSettingsFragment subscriptions import/export -->
+
+    <!-- begin search filter presets -->
+    <string name="sort_order">Sort order</string>
+    <string name="sort_by_name">Sort by name</string>
+    <string name="sort_by_last_used">Sort by last used</string>
+    <string name="sort_by_created">Sort by created</string>
+    <string name="sort_by_modified">Sort by modified</string>
+    <string name="save">Save preset</string>
+    <string name="save_as">Save preset as</string>
+    <string name="presets">Presets</string>
+    <string name="saved_presets">Saved presets</string>
+    <string name="rename_preset">Rename preset</string>
+    <string name="set_as_default">Set as default</string>
+    <string name="last_used">Last used: %1$s</string>
+    <!-- end search filter presets -->
 </resources>

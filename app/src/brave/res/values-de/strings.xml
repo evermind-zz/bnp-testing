@@ -83,4 +83,19 @@
     <string name="update">Aktualisieren</string>
     <string name="update_new_version">Neue Version: %s</string>
     <!-- end BravePipe Apk upgrade dialog -->
+
+    <!-- begin search filter presets -->
+    <string name="sort_order">Reihenfolge</string>
+    <string name="sort_by_name">Sortiere nach Name</string>
+    <string name="sort_by_last_used">Sortiere nach Zuletzt verwendet</string>
+    <string name="sort_by_created">Sortiere nach Erstellt</string>
+    <string name="sort_by_modified">Sortiere nach Geändert</string>
+    <string name="save">Speichere Preset</string>
+    <string name="save_as">Speichere Preset als</string>
+    <string name="presets">Presets</string>
+    <string name="saved_presets">Gespeicherte Presets</string>
+    <string name="rename_preset">Preset umbenennen</string>
+    <string name="set_as_default">Als Standard setzen</string>
+    <string name="last_used">Zuletzt genutzt: %1$s</string>
+    <!-- end search filter presets -->
 </resources>
