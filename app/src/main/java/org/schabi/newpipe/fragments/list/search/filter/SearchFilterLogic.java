@@ -87,11 +87,7 @@ public class SearchFilterLogic {
     public void reset() {
         initContentFilters();
         initSortFilters();
-        deselectUiItems(contentFilterIdToUiItemMap);
-        deselectUiItems(sortFilterIdToUiItemMap);
-        reselectUiItems(selectedContentFilters, contentFilterIdToUiItemMap);
-        reselectUiItems(selectedSortFilters, sortFilterIdToUiItemMap);
-        showSortFilterContainerUI();
+        reInitUi();
     }
 
     private void reInitExclusiveFilterIds(@NonNull final List<Integer> selectedFilters,
@@ -104,7 +100,7 @@ public class SearchFilterLogic {
         }
     }
 
-    public void restorePreviouslySelectedFilters(
+    public synchronized void restorePreviouslySelectedFilters(
             @Nullable final List<Integer> selectedContentFilterList,
             @Nullable final List<Integer> selectedSortFilterList) {
         if (selectedContentFilterList != null && selectedSortFilterList != null
@@ -118,6 +114,16 @@ public class SearchFilterLogic {
 
         createContentFilterItemListFromIdentifierList();
         createSortFilterItemListFromIdentifiersList();
+
+        reInitUi();
+    }
+
+    private void reInitUi() {
+        deselectUiItems(contentFilterIdToUiItemMap);
+        deselectUiItems(sortFilterIdToUiItemMap);
+        reselectUiItems(selectedContentFilters, contentFilterIdToUiItemMap);
+        reselectUiItems(selectedSortFilters, sortFilterIdToUiItemMap);
+        showSortFilterContainerUI();
     }
 
     private void reselectUiItems(

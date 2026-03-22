@@ -1,16 +1,22 @@
 // Created by evermind-zz 2022, licensed GNU GPL version 3 or later
 package org.schabi.newpipe.fragments.list.search.filter
 
+import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import org.schabi.newpipe.R
+import org.schabi.newpipe.brave.feature.savesearchpresets.ui.PresetListDialogFragment
 import org.schabi.newpipe.fragments.list.search.SearchViewModel
 
 /**
@@ -105,8 +111,78 @@ abstract class BaseSearchFilterDialogFragment : DialogFragment() {
             } else if (item.itemId == R.id.reset) {
                 searchViewModel!!.searchFilterLogic.reset()
                 return@OnMenuItemClickListener true
+            } else if (item.itemId == R.id.save) {
+                onSavePresetClicked()
+                return@OnMenuItemClickListener true
+            } else if (item.itemId == R.id.saveAs) {
+                onSavePresetAsClicked()
+                return@OnMenuItemClickListener true
+            } else if (item.itemId == R.id.showPresets) {
+                PresetListDialogFragment()
+                    .show(parentFragmentManager, "fragment_search_presets")
+                return@OnMenuItemClickListener true
             }
             false
         })
+    }
+
+    private fun onSavePresetClicked() {
+        // try to save if previous entry exists
+        if (searchViewModel!!.savePreset()) {
+            return
+        }
+
+        // no previous exists so ask for name to store preset
+        onSavePresetAsClicked()
+    }
+
+    private fun onSavePresetAsClicked() {
+        SavePresetDialog(requireContext()) { name ->
+
+            if (name.isEmpty()) {
+                showError("Name cannot be empty")
+                return@SavePresetDialog
+            }
+
+            val currentService = searchViewModel!!.getService().serviceInfo.name
+
+            if (!searchViewModel!!.isPresetNameAvailable(currentService, name)) {
+                showError("Preset name already exists")
+                return@SavePresetDialog
+            }
+
+            searchViewModel!!.savePresetAs(name)
+
+        }.show()
+    }
+
+    private fun showError(string: String) {
+        Log.e(TAG, "Error ${string}")
+        Toast.makeText(context, "Error ${string}", Toast.LENGTH_LONG).show()
+    }
+
+
+    class SavePresetDialog(
+        context: Context,
+        private val onSave: (String) -> Unit
+    ) : AlertDialog(context) {
+
+        init {
+            val input = EditText(context)
+
+            setTitle(R.string.save)
+            setView(input)
+
+            setButton(BUTTON_POSITIVE, context.getString(R.string.ok)) { _, _ ->
+                val name = input.text.toString().trim()
+                onSave(name)
+            }
+
+            setButton(BUTTON_NEGATIVE, context.getString(R.string.cancel)) { _, _ -> }
+        }
+    }
+
+    companion object {
+        val TAG: String = BaseSearchFilterDialogFragment::class.java.simpleName
     }
 }

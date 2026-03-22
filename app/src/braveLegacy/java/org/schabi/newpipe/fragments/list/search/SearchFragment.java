@@ -268,7 +268,9 @@ public class SearchFragment extends BaseListFragment<SearchInfo, ListExtractor.I
 
     protected void initViewModel() {
         searchViewModel = new ViewModelProvider(this, SearchViewModel.Companion
-                .getFactory(serviceId,
+                .getFactory(
+                        requireContext(),
+                        serviceId,
                         logicVariant,
                         userSelectedContentFilterList,
                         userSelectedSortFilterList))
