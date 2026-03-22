@@ -1,5 +1,22 @@
 # https://developer.android.com/build/shrink-code
 
+###### begin -- BravePipe
+# conscrypt rules (where not needed on 2.4.0)
+-dontwarn com.android.org.conscrypt.SSLParametersImpl
+-dontwarn org.apache.harmony.xnet.provider.jsse.SSLParametersImpl
+
+# rules for greenrobot
+-keepattributes *Annotation*
+-keepclassmembers class * {
+    @org.greenrobot.eventbus.Subscribe <methods>;
+}
+-keep enum org.greenrobot.eventbus.ThreadMode { *; }
+# And if you use AsyncExecutor:
+-keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
+    <init>(java.lang.Throwable);
+}
+###### end -- BravePipe
+
 ## Helps debug release versions
 -dontobfuscate
 
@@ -40,19 +57,7 @@
 ## For some reason NotificationModeConfigFragment wasn't kept (only referenced in a preference xml)
 -keep class org.schabi.newpipe.settings.notifications.** { *; }
 
-# begin -- BravePipe
-# conscrypt rules (where not needed on 2.4.0)
--dontwarn com.android.org.conscrypt.SSLParametersImpl
--dontwarn org.apache.harmony.xnet.provider.jsse.SSLParametersImpl
-
-# rules for greenrobot
--keepattributes *Annotation*
--keepclassmembers class * {
-    @org.greenrobot.eventbus.Subscribe <methods>;
+# Prevent R8 from stripping or renaming Protobuf internal fields
+-keepclassmembers class * extends com.google.protobuf.GeneratedMessageLite {
+    <fields>;
 }
--keep enum org.greenrobot.eventbus.ThreadMode { *; }
-# And if you use AsyncExecutor:
--keepclassmembers class * extends org.greenrobot.eventbus.util.ThrowableFailureEvent {
-    <init>(java.lang.Throwable);
-}
-# end -- BravePipe
