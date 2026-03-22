@@ -418,7 +418,7 @@ project.dependencies.implementation("com.github.bravepipeproject:extractor:v0.26
 // the LogcatToolkit
 project.dependencies.implementation("com.github.evermind-zz:logcat-toolkit:1.0.0")
 // cf challenge helper
-project.dependencies.implementation("com.github.evermind-zz:challengeFloatsAway:1.0.0")
+project.dependencies.implementation("com.github.evermind-zz:challengeFloatsAway:1.1.1")
 
 configurations.all {
     exclude(group = "com.github.TeamNewPipe", module = "NewPipeExtractor")
