@@ -208,7 +208,7 @@ class SubscriptionFragment : BaseStateFragment<SubscriptionState>() {
 
     private fun onExportSelected() {
         val date = SimpleDateFormat("yyyyMMddHHmm", Locale.ENGLISH).format(Date())
-        val exportName = "bravepipe_subscriptions_$date.json"
+        val exportName = "newpipe_subscriptions_$date.json"
 
         NoFileManagerSafeGuard.launchSafe(
             requestExportLauncher,
