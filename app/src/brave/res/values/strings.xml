@@ -172,13 +172,6 @@
     <string name="brave_settings_debug_logcat_dumper_summary">Include logcat output in error reporting and email.</string>
     <!-- end settings debugging -->
 
-    <!-- begin - BackupRestoreSettingsFragment subscriptions import/export -->
-    <string name="import_subscriptions_title">Import subscriptions"</string>
-    <string name="export_subscriptions_title">Export subscriptions</string>
-    <string name="import_subscriptions_summary">Import subscriptions from a previous .json export"</string>
-    <string name="export_subscriptions_summary">Export your subscriptions to a .json file</string>
-    <string name="import_from_previous_export">Import from previous export</string>
-    <!-- end - BackupRestoreSettingsFragment subscriptions import/export -->
 
     <!-- begin search filter presets -->
     <string name="sort_order">Sort order</string>
